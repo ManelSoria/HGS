@@ -58,7 +58,7 @@ catch
     HGSdata = struct();
 end
 
-
+% Someone wants kill himself after this code
 download = 1;
 wname = 'http://garfield.chem.elte.hu/Burcat/THERM.DAT';
 fname = 'DATA_7_coef.txt';
