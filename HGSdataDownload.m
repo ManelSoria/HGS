@@ -58,6 +58,8 @@ catch
     HGSdata = struct();
 end
 
+% This was hard to do
+% Do NOT try this at home
 
 download = 1;
 wname = 'http://garfield.chem.elte.hu/Burcat/THERM.DAT';
