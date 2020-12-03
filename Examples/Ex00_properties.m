@@ -24,7 +24,7 @@ Ru=8.3144621/1000; % kJ/molK
 [hN2_2]=HGSprop({'N2'},1,301,10,'H');
 
 fprintf('Single species  N2 \n')
-fprintf('DeltaH = <%f> , Cp = <%f> \n',(hN2_2-hN2_1),CpN2)
+fprintf('DeltaH = <%.4f> , Cp = <%.4f> \n',(hN2_2-hN2_1),CpN2)
 
 
 
