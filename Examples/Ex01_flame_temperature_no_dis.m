@@ -35,4 +35,4 @@ options=optimset(...
  
 [Tp,fval,exitflag]=fsolve(eq,1000,options);
 
-fprintf('Adiabatic flame temperature: %.2f K \n',Tp);
+fprintf('Adiabatic flame temperature: %.3f K \n',Tp);
