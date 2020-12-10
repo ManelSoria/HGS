@@ -2,6 +2,7 @@
 %* HGS 2.0 (adapted from the original HGS 1.3) 
 %* Original by Arnau Miro, Pau Manent, Manel Soria 
 %* Adapted by Caleb Fuster
+%* Commented by Paulino Gil -> Only this comment
 %
 %* ESEIAAT UPC          
 %***********************************************************************************************************
@@ -15,7 +16,10 @@ Ru=8.3144621/1000; % kJ/molK
 
 % Compute the propeties of a mixture of 1 mol of N2, 2 mol of CH4 and 3 mol
 % of C3H8 at 3 bar and 400K 
-[Mm,Cp,Cv,H,S,G,Rg,gamma,a]=HGSprop({'N2','CH4','C3H8'},[1,2,3],400,3)
+[Mm,Cp,Cv,H,S,G,Rg,gamma,a]=HGSprop({'N2','CH4','C3H8'},[1,2,3],400,3); 
+fprintf('propeties of a mixture of 1 mol of N2 , 2 mol of CH4 and 3 mol of C3H8 at 3 bar and 400K \n');
+fprintf('Mm = %f, Cp = %f, Cv = %f \n',Mm,Cp,Cv);
+
 
 
 % Using N2, verify that deltaH is aprox. equal to Cp*deltaT for small
@@ -72,6 +76,7 @@ fprintf('a = <%f> , sqrt(gamma*Rg*1000*T) = <%f> \n',a,sqrt(gamma*Rg*1000*T))
 
 
 % Rg=Ru/MM  kJ/kg K
+% The code is printing here the gas coefficient R
 fprintf('1000*Ru/MM = <%f> , Rg = <%f> \n',1000*Ru/MM ,Rg)
 
 
@@ -117,7 +122,7 @@ fprintf('cp=%f kJ/kgK \n',Cpkg);
 % hgssingle computes H, G and S properties for a single element
 fprintf('hgssingle computes H, G and S properties for a single element \n')
 HGSsingle('O2','h',500,10)
-
+ 
 % hgsprop is also able to compute for a mixture of gases. The sintax is
 % shown below
 fprintf('hgsprop is also able to compute for a mixture of gases \n')
