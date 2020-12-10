@@ -127,3 +127,5 @@ HGSsingle('O2','h',500,10)
 % shown below
 fprintf('hgsprop is also able to compute for a mixture of gases \n')
 [Mm,Cp,Cv,H,S,G,Rg,gamma,a]=HGSprop({'O2' 'N2'},[0.2 0.8],400,3)
+
+fprintf('Mm=%f \n', Mm);
