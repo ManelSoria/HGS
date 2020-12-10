@@ -2,7 +2,6 @@
 %* HGS 2.0 (adapted from the original HGS 1.3) 
 %* Original by Arnau Miro, Pau Manent, Manel Soria 
 %* Adapted by Caleb Fuster
-%* Commented by Paulino Gil -> Only this comment
 %
 %* ESEIAAT UPC          
 %***********************************************************************************************************
