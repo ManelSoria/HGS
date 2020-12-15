@@ -7,7 +7,8 @@
 %
 % Example 10: The MAN problem
 % Wet air reaction with hydrocarbons
-clear all
+clearvars
+close all
 clc
 
 hum = 0:2:100;
@@ -51,8 +52,8 @@ for ii = 1:length(hum)
     % If you want to put dissociation, it is possible. Like in this example H2
     % and H or O2 and O.
 
-    species = {wet{1:end} fuel{1:end} 'H2' 'CO2' 'NO2'};
-    n0  =     [   nwet        nfuel     0    0     0  ];
+    species = {wet{1:end} fuel{1:end}  'CO2' };
+    n0  =     [   nwet        nfuel      0   ];
 
     % Suposing that Wet air and Fuels have not the same inlet T
     Hwet = HGSprop(wet,nwet,298.15,1,'H');
@@ -69,10 +70,23 @@ end
 
 figure
 plot(hum,Tp);
+ylabel('Tp [K]')
+xlabel('Humidity [%]')
 
 figure
 hold on
 for ii = 1 : length(species)
-    plot(hum,nper(:,ii));
+    plot(hum,nper(:,ii)*100);
 end
+xlabel('Humidity [%]')
+ylabel('Mols [%]')
+legend(species)
+
+figure
+hold on
+for ii = 1 : length(species)
+    plot(hum,n(:,ii));
+end
+xlabel('Humidity [%]')
+ylabel('Mols [mols]')
 legend(species)
