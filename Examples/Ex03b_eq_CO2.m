@@ -71,6 +71,6 @@ for i=1:length(TT)
 end
 toc
 
-
+% Plotting the solution
 semilogy(TT,XX,'o-');
 grid
