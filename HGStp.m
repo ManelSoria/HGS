@@ -34,7 +34,7 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 %**************************************************************************
-% Outputs:
+% Outputs: 
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
 % n --> [mols] Species resultant mols
