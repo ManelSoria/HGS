@@ -13,7 +13,7 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
 % n0 --> [mols] Number of mols of each species
-% type --> Entry type. It coould be 'T' or 'S'
+% type --> Entry type. It coould be 'T' or 'H'
 % V0 --> Entry that should be for type:'T'   V0=T [K] 
 %                                      'H'   V0=H [kJ]
 % P --> [bar] Pressure
