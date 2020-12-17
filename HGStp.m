@@ -5,17 +5,18 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %
 %**************************************************************************
 % 
-% HGSisentropic calculates the reaction final temperature and mixture
-% composition 
+% HGSisentropic calculates the reaction final temperature considering 
+% dissociation, and the products composition in equilibrium
 %
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
 % n0 --> [mols] Number of mols of each species
-% type --> Entry type. It coould be 'T' or 'H'
-% V0 --> Entry that should be for type:'T'   V0=T [K] 
-%                                      'H'   V0=H [kJ]
+% type --> Entry type that desfines the state of the input. 
+%        It can be 'T' or 'H'
+% V0 --> Entry that should be for type:'T'   V0=T [K] input temperature
+%                                      'H'   V0=H [kJ] input enthalpy
 % P --> [bar] Pressure
 % options --> Structure with the options for the secant method. 
 %                 .xmin [K] Temperature minimum for the solver;
@@ -33,7 +34,7 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 %**************************************************************************
-% Outputs:
+% Outputs: 
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
 % n --> [mols] Species resultant mols
