@@ -5,7 +5,7 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %
 %**************************************************************************
 % 
-% HGSisentropic calculates the reaction final temperature considering 
+% HGStp calculates the reaction temperature considering 
 % dissociation, and the products composition in equilibrium
 %
 %**************************************************************************
@@ -44,6 +44,10 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %                -1  Solver failed. Maximum iterations
 %                -2  Solver failed. Initial sign change not found
 %
+%**************************************************************************
+% Examples:
+% HGStp({'H2','O2','H2O','H','O','OH'}, [2 1 0 0 0 0] , 'T', 400, 10)
+% HGStp({'H2','O2','H2O','H','O','OH'}, [2 1 0 0 0 0] , 'H', 3.1, 10)
 %**************************************************************************
 % *HGS 2.0
 % *By Caleb Fuster, Manel Soria and Arnau Miró
