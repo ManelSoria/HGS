@@ -71,7 +71,7 @@ if max(id) >= length(HGSdata.Mm)
    [id] = HGSid(species);
 end
 
-% compute initial enthalpy
+% Compute initial enthalpy
 if type=='T'
     H = HGSprop(id,n0,V0,P,'H');
 else
