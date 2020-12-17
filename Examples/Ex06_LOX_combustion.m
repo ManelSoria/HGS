@@ -20,7 +20,7 @@ clear; clc;
 
 species={'H2','O2' , 'H2O','H','O','OH'};
 nr=[2;1;0;0;0;0]; % mol
-P=10
+P=10;
 
 
 options = [];
@@ -37,6 +37,8 @@ hH2= HGSsingle('H2','h',413.96,10) -10.9495;
 % Enthalpy of stoichiometric mixture
 HinLIQ=2*hH2+1*hO2;
 
+[Tp1,n,species,flag] = HGStp(species,nr,'H',HinLIQ,P);
+
  
     function DeltaH=DeltaH(Tprod)
         [~,comp,~] = HGSeq(species,nr,Tprod,P);
@@ -47,5 +49,10 @@ HinLIQ=2*hH2+1*hO2;
 opt = optimset('Display','iter'); 
 Tp=fzero(@DeltaH,3000,opt);
 [~,np,~]= HGSeq(species,nr,Tp,P);
+
+fprintf('\n   HGStp <%f>   DeltaH<%f>\n',Tp1,Tp)
+for ii=1:length(n)
+    fprintf('%s       <%f>             <%f>\n',species{ii},n(ii),np(ii))
+end
 
 end
