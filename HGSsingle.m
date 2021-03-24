@@ -62,6 +62,7 @@ end
 
 id = HGSid(species);
 global HGSdata;
+HGSload;
 
 %% Burcat coeficients
 if code(7)  
