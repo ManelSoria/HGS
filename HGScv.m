@@ -24,7 +24,7 @@ function [Cv] = HGScv(Cp)
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
-global R; HGSr;
+global R
 
 Cv = Cp - R;  
 
