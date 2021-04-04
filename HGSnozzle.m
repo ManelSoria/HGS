@@ -49,7 +49,7 @@ function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
 
 [Tp,n,species,v2,~,flag] = HGSisentropic(species,n0,T0,P0,P1,options);
 [MM] = HGSprop(species,n,[],[],'Mm');
-m = MM+sum(n);
+m = MM*sum(n);
 F = m*v2-A*(P1-Pa);
 g0 = 9.807;
 Isp = v2/g0;
