@@ -4,7 +4,6 @@ function [Res] = HGSsingle(species,property,T,P)
 % [Res] = HGSsingle(species,property,T,P)
 %
 %**************************************************************************
-%
 % Inputs:
 %--------------------------------------------------------------------------
 % species --> String or numbers of species

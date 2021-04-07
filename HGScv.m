@@ -9,15 +9,14 @@ function [Cv] = HGScv(Cp)
 % pressure coeficient
 %
 %**************************************************************************
-%
 % Inputs:
 %--------------------------------------------------------------------------
-% Cp --> [kJ/(mol*K)] Constant pressure coeficient
+% Cp --> [kJ/(mol*K)] Constant pressure coefficient
 % Mm --> [g/mol] Molar Mass
 %
 % Outputs:
 %--------------------------------------------------------------------------
-% Cv --> [kJ/(mol*K)] Constant volume coeficient
+% Cv --> [kJ/(mol*K)] Constant volume coefficient
 %
 %**************************************************************************
 % *HGS 2.0

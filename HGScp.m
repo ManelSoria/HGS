@@ -9,10 +9,9 @@ function [Cp] = HGScp(a,T)
 % coeficients  and temperature
 %
 %**************************************************************************
-%
 % Inputs:
 %--------------------------------------------------------------------------
-% a --> Burcat coeficients
+% a --> Burcat coefficients
 % T --> [K] Temperature
 %
 % Outputs:
