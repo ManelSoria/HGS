@@ -45,14 +45,31 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 
 %% Options
 
-x1 = options.xmin ;
-x2 = options.xmax ;
-maxiter = options.maxiter;
-epsx = options.epsx;
-epsy = options.epsy;
-fchange = options.fchange;
-info = options.info;
-dTp = options.dTp;
+def.xmin = 300;
+def.xmax = 4000;
+def.maxiter = 100;
+def.epsx = 0.1;
+def.epsy = 1;
+def.fchange = 5;
+def.info = 0;
+def.dTp = 100;
+
+if exist('options','var') && ~isempty(options)
+    fields = fieldnames(options);
+    for ii = 1:length(fields)
+        def.(fields{ii}) = options.(fields{ii});
+    end
+end
+
+
+x1 = def.xmin ;
+x2 = def.xmax ;
+maxiter = def.maxiter;
+epsx = def.epsx;
+epsy = def.epsy;
+fchange = def.fchange;
+info = def.info;
+dTp = def.dTp;
 
 %% Evaluation of Max and Min T
 
