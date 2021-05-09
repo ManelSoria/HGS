@@ -32,7 +32,7 @@ function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',100,'epsx',0.1,'epsy',1,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',1,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ end
 
 def.xmin = 300;
 def.xmax = 4000;
-def.maxiter = 100;
+def.maxiter = 200;
 def.epsx = 0.1;
 def.epsy = 1;
 def.fchange = 5;
