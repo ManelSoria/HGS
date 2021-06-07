@@ -26,7 +26,8 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',
+%                   1,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -44,14 +45,31 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 
 %% Options
 
-x1 = options.xmin ;
-x2 = options.xmax ;
-maxiter = options.maxiter;
-epsx = options.epsx;
-epsy = options.epsy;
-fchange = options.fchange;
-info = options.info;
-dTp = options.dTp;
+def.xmin = 300;
+def.xmax = 4000;
+def.maxiter = 200;
+def.epsx = 0.1;
+def.epsy = 1;
+def.fchange = 5;
+def.info = 0;
+def.dTp = 100;
+
+if exist('options','var') && ~isempty(options)
+    fields = fieldnames(options);
+    for ii = 1:length(fields)
+        def.(fields{ii}) = options.(fields{ii});
+    end
+end
+
+
+x1 = def.xmin ;
+x2 = def.xmax ;
+maxiter = def.maxiter;
+epsx = def.epsx;
+epsy = def.epsy;
+fchange = def.fchange;
+info = def.info;
+dTp = def.dTp;
 
 %% Evaluation of Max and Min T
 
@@ -122,7 +140,7 @@ for ii=1:maxiter
     
     [yc,n]=f(xc,n); % compute next value
     
-    if abs(yc)<epsy && (abs(xc-x1)<epsx || abs(x2-xc)<epsx )% stop if it is solved
+    if abs(yc)<epsy || (abs(xc-x1)<epsx && abs(x2-xc)<epsx )% stop if it is solved
         flag = 1;
         Tp=xc;
         break;

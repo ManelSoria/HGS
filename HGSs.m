@@ -11,7 +11,7 @@ function [S] = HGSs(a,T,P,state)
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% a -->  Burcat coeficients
+% a -->  Burcat coefficients
 % T --> [K] Temperature
 % P --> [bar] Pressure
 % state -->  State of the species

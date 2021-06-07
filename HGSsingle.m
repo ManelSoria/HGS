@@ -4,7 +4,6 @@ function [Res] = HGSsingle(species,property,T,P)
 % [Res] = HGSsingle(species,property,T,P)
 %
 %**************************************************************************
-%
 % Inputs:
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
@@ -62,10 +61,11 @@ end
 
 id = HGSid(species);
 global HGSdata;
+HGSload;
 
 %% Burcat coeficients
 if code(7)  
-    if T <= HGSdata.lim(id,1) || T >= HGSdata.lim(id,3)
+    if T < HGSdata.lim(id,1) || T > HGSdata.lim(id,3)
         lim(1,1) = HGSdata.lim(id,1);
         lim(1,3) = HGSdata.lim(id,3);
         name = species;

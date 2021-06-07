@@ -30,7 +30,6 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 %                                       'Shifting' for shifting flow
 %           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'')
 %
-%**************************************************************************
 % Outputs:
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
