@@ -47,7 +47,7 @@ end
 jj = 1;
 while jj <= length(species)
    id = HGSid(species{jj});
-   if id >= length(HGSdata.Mm)
+   if id > length(HGSdata.Mm)
        for ii=1:length(HGSdata.comb)
            if strcmp(HGSdata.comb{ii},species{jj})
                 newspecies = species(1,1:jj-1);

@@ -1,7 +1,7 @@
 function [id] = HGSid(species)
 %**************************************************************************
 %
-% [id] = HGSid(name)
+% [id] = HGSid(species)
 %
 %**************************************************************************
 % 
@@ -30,9 +30,8 @@ end
 global HGSdata;HGSload;
 
 
-ns=size(HGSdata.Mm,1); % number of species
+ns=size(HGSdata.Mm,1); % Number of species
 if isfield(HGSdata,'comb') && ~isempty(HGSdata.comb)
-    nc=size(HGSdata.comb,1); % number of combinations
     combination = 1;
 else
     combination = 0;

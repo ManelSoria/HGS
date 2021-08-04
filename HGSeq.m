@@ -44,7 +44,7 @@ global HGSdata; HGSload
 [id] = HGSid(species);
 
 % Rebuild mixtures
-if max(id) >= length(HGSdata.Mm)
+if max(id) > length(HGSdata.Mm)
    [species,n0] = HGSrebuild(species,n0);
    [id] = HGSid(species);
 end

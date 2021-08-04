@@ -56,14 +56,14 @@ switch property
     case 'g'
         code(4:7) = 1;
     otherwise 
-        error('Uknown property %s ',property);
+        error('Unknown property %s ',property);
 end
 
 id = HGSid(species);
 global HGSdata;
 HGSload;
 
-%% Burcat coeficients
+%% Burcat coefficients
 if code(7)  
     if T < HGSdata.lim(id,1) || T > HGSdata.lim(id,3)
         lim(1,1) = HGSdata.lim(id,1);

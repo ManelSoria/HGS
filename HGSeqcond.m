@@ -92,7 +92,7 @@ options = def;
 
     function [H,n] = hastobezero(T,n)
         if ~isfield(options,'type') || strcmpi(options.type,'Shifting')
-            [~,n,~]=HGSeq(species,n,T,P,[]);
+            [~,n,~]=HGSeq(id,n,T,P,[]);
         end
         [H] = HGSprop(id,n,T,P,type)-V0;
     end
