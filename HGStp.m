@@ -13,8 +13,8 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
 % n0 --> [mols] Number of mols of each species
-% type --> Entry type that desfines the state of the input. 
-%        It can be 'T' or 'H'
+% type --> Entry type that defines the state of the input. 
+%          It can be 'T' or 'H'
 % V0 --> Entry that should be for type:'T'   V0=T [K] input temperature
 %                                      'H'   V0=H [kJ] input enthalpy
 % P --> [bar] Pressure

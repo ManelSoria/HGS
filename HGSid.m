@@ -5,12 +5,12 @@ function [id] = HGSid(species)
 %
 %**************************************************************************
 % 
-% HGSid finds the id of the species to improove the velocity of the code
+% HGSid finds the id of the species to improve the velocity of the code
 %
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% name --> String or numbers of species
+% species --> String or numbers of species
 %
 % Outputs:
 %--------------------------------------------------------------------------
