@@ -48,9 +48,9 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 def.xmin = 300;
 def.xmax = 4000;
 def.maxiter = 200;
-def.epsx = 0.1;
+def.epsx = 5;
 def.epsy = 1;
-def.fchange = 5;
+def.fchange = 500;
 def.info = 0;
 def.dTp = 100;
 
@@ -123,11 +123,12 @@ if x2-x1 > 1500  % Try to fit to a parabola and solve the eq.
 end
 
 flag=-1; % We assume we are not solving it
-
+Bisec = 0;
 for ii=1:maxiter
         
-    if x2-x1 < fchange % If limits are close, switch to bisection algorithm
+    if Bisec % If limits are close, switch to bisection algorithm
         xc = (x1+x2)/2; 
+        Bisec = 0;
     else
         xc = x1-y1*(x2-x1)/(y2-y1); % Secant method
     end
@@ -151,10 +152,16 @@ for ii=1:maxiter
     end
     
     if yc*y1>0 % Change limits
+        if x2 - xc < fchange || xc - x1 < fchange
+            Bisec = 1;
+        end
         y1=yc;
         x1=xc;
         n1=n;
     else
+        if x2 - xc < fchange || xc - x1 < fchange
+            Bisec = 1;
+        end
         y2=yc;
         x2=xc;
         n2=n;
