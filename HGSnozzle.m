@@ -29,7 +29,6 @@ function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
 %                                       'Shifting' for shifting flow
 %           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'')
 %
-%**************************************************************************
 % Outputs:
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
@@ -49,7 +48,7 @@ function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
 
 [Tp,n,species,v2,~,flag] = HGSisentropic(species,n0,T0,P0,P1,options);
 [MM] = HGSprop(species,n,[],[],'Mm');
-m = MM+sum(n);
+m = MM*sum(n);
 F = m*v2-A*(P1-Pa);
 g0 = 9.807;
 Isp = v2/g0;

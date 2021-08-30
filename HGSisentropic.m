@@ -62,10 +62,9 @@ if max(id) >= length(HGSdata.Mm)
    [id] = HGSid(species);
 end
 
-% compute initial enthalpy
+% compute initial entropy and enthalpy
 
 [S,Mm1,H1] = HGSprop(id,n0,T0,P0,'S','Mm','H');% Inlet properties
-
 
 [Tp,n,~,flag]=HGSeqcond(id,n0,'S',S,P1,options);
 

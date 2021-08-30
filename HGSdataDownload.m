@@ -49,7 +49,7 @@ clc;
 global HGSdata
 
 % Visualize name modifications
-info = 0;
+info = 1;
 
 % Load HGSdata to be updated or create the structure
 try
@@ -113,6 +113,11 @@ while 1
        continue
    end
    
+   if strcmpi(name(1:5),'MgCL2')==1 % we ignore air as composition is not given
+       l = fgetl(fi); l = fgetl(fi); l = fgetl(fi); % skip 3 lines
+       continue
+   end
+   
    % Process first line
    % Get name
    HGSdata.name{ii,1} =  name; 
@@ -123,10 +128,13 @@ while 1
        HGSdata.state{ii,1} =  l(45); % State
        lcomp = 0;
    end
+
+   
    % Process temperature limits
    HGSdata.lim(ii,1) = str2double(strtrim(l(49:55)));
-   HGSdata.lim(ii,2) = str2double(strtrim(l(67:75)));
+   HGSdata.lim(ii,2) = str2double(strtrim(l(67:73)));
    HGSdata.lim(ii,3) = str2double(strtrim(l(58:65)));
+   
   
    
    % Process composition
@@ -200,14 +208,13 @@ for ii=1:size(HGSdata.name,1)
     if info
         fprintf('\n <%d> %s',ii,HGSdata.name{ii,1})
     end
-    % oname=HGSdata.name{ii,1}; % original name
     
     % Change name  NE PO BR PB AL and CL 
 
     % Aluminium AL -> Al
     LowcaseSp('AL')
     
-    % Clorur CL -> Cl
+    % Chlorine CL -> Cl
     LowcaseSp('CL')
     
     % Polonium PO -> Po
@@ -216,19 +223,19 @@ for ii=1:size(HGSdata.name,1)
     % Lead PB -> Pb
     LowcaseSp('PB')
     
-    % Bromur BR -> Br
+    % Bromine BR -> Br
     LowcaseSp('BR')
     
     % Argon AR -> Ar
     LowcaseSp('AR')
     
-    % Argon IR -> Ir
+    % Iridium IR -> Ir
     LowcaseSp('IR')
     
     % Neon NE -> Ne
     LowcaseSp('NE')
     
-    % Neon OS -> Os
+    % Osmium OS -> Os
     LowcaseSp('OS')
         
     % E- 
@@ -282,8 +289,8 @@ for ii=1:size(HGSdata.name,1)
     if ~isempty(Form)
         if strcmp(HGSdata.name{ii,1}(Form(1)-1),'-')
             HGSdata.name{ii,1} = [HGSdata.name{ii,1}(1:Form(1)-1) ' ' HGSdata.name{ii,1}(Form(1):end)];
+            printChange
         end
-       printChange
     end
     
     % Comas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Mirar como hacer eso
@@ -357,7 +364,7 @@ for ii=1:size(HGSdata.name,1)
         
         % Radi variant
 
-        StateChange('biradical','')
+        StateChange('biradical','');
         StateChange('Radical','');StateChange('RADICAL','');StateChange('radical','');
         StateChange('Radica','');StateChange('RADICA','');StateChange('radica','');
         StateChange('Radic','');StateChange('RADIC','');StateChange('radic','');
@@ -392,7 +399,7 @@ for ii=1:size(HGSdata.name,1)
         StateChange('LIQ','(l)')
         StateChange('Liq','(l)')
         
-        % Liquid change (l)in a bracke to (l)out of bracket
+        % Liquid change (l)in a bracket to (l) out of bracket
         OutBracket('(l)')
         
         %  Gas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -400,14 +407,14 @@ for ii=1:size(HGSdata.name,1)
         % Gas change GAS -> (g)
         StateChange('GAS','(g)')   
         
-        % Gas change (g)in a bracket to (g)out of bracket
+        % Gas change (g)in a bracket to (g) out of bracket
         OutBracket('(g)')
         
             
         
         
 %%%%%%%%%%%%%%%%%%%% Solid %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Solid change Solid-* in a bracke to (s.*)out of bracket
+        % Solid change Solid-* in a bracket to (s.*)out of bracket
         StateChange('(s)[Alpha]','(s.A)')
         StateChange('(s)[Beta]','(s.B)')
         StateChange('(s)[Gama]','(s.C)')
@@ -420,7 +427,7 @@ for ii=1:size(HGSdata.name,1)
         StateChange('SOLID','(s)')
         StateChange('solid','(s)')
         
-        % Solid change (s) (s.A) & co in a bracke to -- out of bracket
+        % Solid change (s) (s.A) & co in a bracket to -- out of bracket
         SolChange('(s)','(cr)')
         SolChange('(s)','(s.A)')
         SolChange('(s)','(s.B)')
@@ -611,6 +618,10 @@ for i=1:ns
     HGSdata.nat{end+1}=nel;
 end
 
+% Manel hated my struct so I had to change it
+HGSdata = rmfield(HGSdata,'spec');
+HGSdata = rmfield(HGSdata,'nspec');
+
 %% Brackets out
 
 roman = {'I' 'II' 'III' 'IV' 'V' 'VI' 'VII' 'VIII' 'IX' 'X' 'XI' 'XII' ...
@@ -660,11 +671,11 @@ end
                for jj=1:4
                    if strcmp(Change,HGSdata.spec{ii,jj})
                         HGSdata.name{ii,1} = strrep(HGSdata.name{ii,1},sp,Change);
+                        printChange 
                         break;
                    end
                end
-            end
-            printChange   
+            end  
         end
     end
 

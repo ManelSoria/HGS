@@ -26,7 +26,8 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',
+%                   1,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -44,14 +45,31 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 
 %% Options
 
-x1 = options.xmin ;
-x2 = options.xmax ;
-maxiter = options.maxiter;
-epsx = options.epsx;
-epsy = options.epsy;
-fchange = options.fchange;
-info = options.info;
-dTp = options.dTp;
+def.xmin = 300;
+def.xmax = 4000;
+def.maxiter = 200;
+def.epsx = 5;
+def.epsy = 1;
+def.fchange = 500;
+def.info = 0;
+def.dTp = 100;
+
+if exist('options','var') && ~isempty(options)
+    fields = fieldnames(options);
+    for ii = 1:length(fields)
+        def.(fields{ii}) = options.(fields{ii});
+    end
+end
+
+
+x1 = def.xmin ;
+x2 = def.xmax ;
+maxiter = def.maxiter;
+epsx = def.epsx;
+epsy = def.epsy;
+fchange = def.fchange;
+info = def.info;
+dTp = def.dTp;
 
 %% Evaluation of Max and Min T
 
@@ -62,11 +80,11 @@ Tp=[];
 n=[];
 
 if y1*y2 > 0 % No sign change, sorry !
-    flag=-2; % initial sign change not found
+    flag=-2; % Initial sign change not found
     return
 end
 
-if x2-x1 > 1500  % try to fit to a parabola and solve the eq.
+if x2-x1 > 1500  % Try to fit to a parabola and solve the eq.
    x3 = (x2+x1)/2;
    [y3,~] = f(x3,n0); 
    a = (y1 -(y2-y3)/(x2-x3)*x1 - y3 + x3*(y2-y3)/(x2-x3)) / (x1^2 + (x1-x3)*(x3^2-x2^2)/(x2-x3) - x3^2);
@@ -104,25 +122,26 @@ if x2-x1 > 1500  % try to fit to a parabola and solve the eq.
    end
 end
 
-flag=-1; % we assume we are not solving it
-
+flag=-1; % We assume we are not solving it
+Bisec = 0;
 for ii=1:maxiter
         
-    if x2-x1 < fchange % if limits are close, switch to bisection algorithm
+    if Bisec % If limits are close, switch to bisection algorithm
         xc = (x1+x2)/2; 
+        Bisec = 0;
     else
-        xc = x1-y1*(x2-x1)/(y2-y1); % secant method
+        xc = x1-y1*(x2-x1)/(y2-y1); % Secant method
     end
    
-    if xc-x1 < x2-xc % next iteration is closer to x1
+    if xc-x1 < x2-xc % Next iteration is closer to x1
         n=n1;
     else
         n=n2;
     end
     
-    [yc,n]=f(xc,n); % compute next value
+    [yc,n]=f(xc,n); % Compute next value
     
-    if abs(yc)<epsy && (abs(xc-x1)<epsx || abs(x2-xc)<epsx )% stop if it is solved
+    if abs(yc)<epsy || (abs(xc-x1)<epsx && abs(x2-xc)<epsx )% Stop if it is solved
         flag = 1;
         Tp=xc;
         break;
@@ -132,11 +151,17 @@ for ii=1:maxiter
        fprintf('ii=%d x1=%e y1=%e xc=%e yc=%e x2=%e y2=%e \n',ii,x1,y1,xc,yc,x2,y2);
     end
     
-    if yc*y1>0 % change limits
+    if yc*y1>0 % Change limits
+        if x2 - xc < fchange || xc - x1 < fchange
+            Bisec = 1;
+        end
         y1=yc;
         x1=xc;
         n1=n;
     else
+        if x2 - xc < fchange || xc - x1 < fchange
+            Bisec = 1;
+        end
         y2=yc;
         x2=xc;
         n2=n;

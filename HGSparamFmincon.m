@@ -40,8 +40,8 @@ b = [];
 % Mass conservation of elemts must be complished
 Elem = {};
 for ii=1:spec
-    for jj = 1:4
-        Elem = [Elem; HGSdata.spec{id(ii),jj}];
+    for jj = 1:length(HGSdata.ena{id(ii)})
+        Elem = [Elem; HGSdata.ena{id(ii)}{jj}];
     end
 end
 
@@ -53,10 +53,10 @@ beq = zeros(Lelem,1);
 
 for ii=1:Lelem
     for jj=1:spec
-        for kk=1:4
-            if strcmp(HGSdata.spec{id(jj),kk},Elem{ii,1})
-                beq(ii,1) = beq(ii,1) + n0(jj)*HGSdata.nspec{id(jj),kk};
-                Aeq(ii,jj) = HGSdata.nspec{id(jj),kk};
+        for kk=1:length(HGSdata.ena{id(jj)})
+            if strcmp(HGSdata.ena{id(jj)}{kk},Elem{ii,1})
+                beq(ii,1) = beq(ii,1) + n0(jj)*HGSdata.nat{id(jj)}(kk);
+                Aeq(ii,jj) = HGSdata.nat{id(jj)}(kk);
             end
         end
     end

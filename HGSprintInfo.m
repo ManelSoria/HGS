@@ -12,7 +12,6 @@ function HGSprintInfo(species)
 %--------------------------------------------------------------------------
 % species --> A single species
 %
-%**************************************************************************
 % Outputs:
 %--------------------------------------------------------------------------
 % Command Window Print
@@ -26,7 +25,7 @@ function HGSprintInfo(species)
     
     id=HGSid(species);
     
-    if numel(id)>1
+    if numel(id) ~= 1
         error('Please call HGSprintInfo with just a component');
     end
     
@@ -38,8 +37,8 @@ function HGSprintInfo(species)
         nat=HGSdata.nat{id};
         ne=numel(ena); % number of elements 
         fprintf('  Composition: ');
-        for j=1:ne
-            fprintf('%s-%d  ',ena{j},nat(j));
+        for jj=1:ne
+            fprintf('%s-%d  ',ena{jj},nat(jj));
         end
         fprintf('\n');
         fprintf('  Mm = %.4f ',HGSdata.Mm(id));
@@ -52,8 +51,8 @@ function HGSprintInfo(species)
         cna=HGSdata.cper{id2}; % combination element atoms
         ne=numel(cna); % number of elements 
         fprintf('  Composition-- ');
-        for j=1:ne
-            fprintf('%s: %.2f%%.  ',cen{j},cna(j));
+        for jj=1:ne
+            fprintf('%s: %.2f%%.  ',cen{jj},cna(jj));
         end
         fprintf('\n     -----------------\n');
     end

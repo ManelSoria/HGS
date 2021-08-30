@@ -54,7 +54,7 @@ global R; HGSr
 [id] = HGSid(species);
 
 % Rebuild mixtures
-if max(id) >= length(HGSdata.Mm)
+if max(id) > length(HGSdata.Mm)
    [species,n] = HGSrebuild(species,n);
    [id] = HGSid(species);
 end
@@ -182,19 +182,17 @@ if code(4)
 end
 
 %% Partial pressure for S and G calculations
-if code(5) || code(6)
+if code(5)
     nt = 0;
-    pres = zeros(1,spec);
     for ii=1:spec
         if strcmp(HGSdata.state{id(ii)},'G')
             nt = nt + n(ii);
-            pres(ii) = 1;
         else
-            error('Ups,.. Right now enthropy can be calculated only for gas mixtures')
+            error('Ups,.. Right now entropy can be calculated only for gas mixtures')
         end
     end
     
-    P_i = pres.*P.*n/nt;
+    P_i = P.*n/nt;
 end
 
 %% S

@@ -5,6 +5,9 @@ function [Res] = HGSsingle(species,property,T,P)
 %
 %**************************************************************************
 %
+% HGSsingle returns the property of a species
+%
+%**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
@@ -57,15 +60,16 @@ switch property
     case 'g'
         code(4:7) = 1;
     otherwise 
-        error('Uknown property %s ',property);
+        error('Unknown property %s ',property);
 end
 
 id = HGSid(species);
 global HGSdata;
+HGSload;
 
-%% Burcat coeficients
+%% Burcat coefficients
 if code(7)  
-    if T <= HGSdata.lim(id,1) || T >= HGSdata.lim(id,3)
+    if T < HGSdata.lim(id,1) || T > HGSdata.lim(id,3)
         lim(1,1) = HGSdata.lim(id,1);
         lim(1,3) = HGSdata.lim(id,3);
         name = species;
