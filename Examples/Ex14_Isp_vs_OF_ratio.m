@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC     
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC  
 %***********************************************************************************************************
 %
-% Example 08: Compute the ISP of H2, O2 mixture vs OF ratio
+% Compute the ISP of H2, O2 mixture vs OF ratio (LIQUID FUEL)
 
 function Ex08_Isp_vs_OF_ratio
 
@@ -92,8 +90,12 @@ for rof=[2 3 4 5 6]
     vrof(end+1)=rof;
     visp(end+1)=Is;
     
-    plot(vrof,visp); xlabel('ratio O/F'); ylabel('Isp (s)');
+    plot(vrof,visp,'LineWidth',2); 
+    xlabel('OF ratio'); ylabel('ISP (s)');
+    set(gca,'FontSize',18)
+    title('ISP vs. OF ratio for a H2-O2 rocket');
     drawnow;
+    
 end
 
 

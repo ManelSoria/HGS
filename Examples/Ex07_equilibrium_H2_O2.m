@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC    
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC 
 %***********************************************************************************************************
 %
-% Example 04: H2O equilibrium dissociation for different values of
+% H2O equilibrium dissociation for different values of
 %             temperature (T)
 %
 % H20 <-> H2 + O2 + H + O + OH
@@ -18,25 +16,27 @@ T=linspace(300,5000,50);    % K
 
 % loop to compute composition using hgseq
 lenT = length(T);
-nH2 = zeros(lenT,1);
-nO2 = zeros(lenT,1);
-nH2O = zeros(lenT,1);
-nH = zeros(lenT,1);
-nO = zeros(lenT,1);
-nOH = zeros(lenT,1);
+xH2 = zeros(lenT,1);
+xO2 = zeros(lenT,1);
+xH2O = zeros(lenT,1);
+xH = zeros(lenT,1);
+xO = zeros(lenT,1);
+xOH = zeros(lenT,1);
 for i=1:lenT
     fprintf('Solving equilibrium composition for T=%f K\n',T(i));
     [~,comp,~]=HGSeq({'H2','O2','H2O','H','O','OH'},[2;1;0;0;0;0],T(i),1);
-    nH2(i)=comp(1);
-    nO2(i)=comp(2);
-    nH2O(i)=comp(3);
-    nH(i)=comp(4);
-    nO(i)=comp(5);
-    nOH(i)=comp(6);
+    xH2(i)=comp(1)/sum(comp);
+    xO2(i)=comp(2)/sum(comp);
+    xH2O(i)=comp(3)/sum(comp);
+    xH(i)=comp(4)/sum(comp);
+    xO(i)=comp(5)/sum(comp);
+    xOH(i)=comp(6)/sum(comp);
 end
 
 % plot the results and apply some basic formatting
-plot(T,nH2O,'r',T,nH,'b',T,nO,'g',T,nOH,'k',T,nH2,'c',T,nO2,'m');
+plot(T,xH2O,'r',T,xH,'b',T,xO,'g',T,xOH,'k',T,xH2,'c',T,xO2,'m','LineWidth',2);
 legend('H20','H','O','OH','H2','O2','Location','NorthWest');
-xlabel('Temperature (K)'); ylabel('concentration (mol)');
+xlabel('Temperature (K)'); ylabel('Molar fraction');
+set(gca,'FontSize',18)
+title('H_2O dissociation as a function of temperature');
 grid;

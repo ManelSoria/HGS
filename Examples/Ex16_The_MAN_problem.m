@@ -1,11 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0
-%* Original Caleb Fuster
-%
-%* ESEIAAT UPC          
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC      
 %***********************************************************************************************************
 %
-% Example 10: The MAN problem
+% The MAN problem
 % Wet air reaction with hydrocarbons. Using Relative humidity.
 % At ambient pressure and temperature.
 

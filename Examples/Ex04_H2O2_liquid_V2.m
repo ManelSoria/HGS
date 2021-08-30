@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC           
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC        
 %***********************************************************************************************************
 %
-% Example 05b: V2 Turbopump example (liquid H2O2 adiabatic decomposition)
+% V2 Turbopump example (liquid H2O2 adiabatic decomposition)
 %
 % 80% H2O2 mass fraction
 % vaporization heat of H2O2 @ 80%: 420 cal/g = 420*4.18 kJ/kg

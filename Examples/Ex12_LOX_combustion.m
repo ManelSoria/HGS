@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC                 
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC              
 %***********************************************************************************************************
 %
-% Example 06: LOX - LH2 combustion
+% LOX - LH2 combustion
 %
 % Temperature of stoichiometric combustion of H2 O2
 % reactives inlet as satured liquit at 10 bar
@@ -50,7 +48,7 @@ opt = optimset('Display','iter');
 Tp=fzero(@DeltaH,3000,opt);
 [~,np,~]= HGSeq(species,nr,Tp,P);
 
-fprintf('\n   HGStp <%f>   DeltaH<%f>\n',Tp1,Tp)
+fprintf('   HGStp <%f>   DeltaH<%f>\n',Tp1,Tp)
 for ii=1:length(n)
     fprintf('%s       <%f>             <%f>\n',species{ii},n(ii),np(ii))
 end

@@ -1,15 +1,16 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC           
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC          
 %***********************************************************************************************************
 %
-% Example 05c: Adiabatic C3H8 reaction using hgsTp
+% Adiabatic C3H8 reaction using hgsTp
 %
 % Inlet: H2, O2 
 % Outlet: H2O + (1/2)O2 at Tp
+% TBD: rewrite the example so that the variable is:
+% (1) the OF ratio 
+% (2) the O2 excess
 
 clear
 species={'C3H8',...
@@ -32,5 +33,10 @@ for i=1:length(molprop)
     [Tp(i),np,~,~]=HGStp(species,nr,'T',298,1,[]);
 end
 
-plot(molprop,Tp);
+plot(molprop,Tp,'LineWidth',2);
 grid;
+set(gca,'FontSize',18)
+xlabel('n (mol C3H8)');
+ylabel('T (K)');
+title('Flame temperature (with dissociation) of n mol C3H8 + 5 mol O2');
+

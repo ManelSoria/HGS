@@ -1,4 +1,4 @@
-function HGSdataDownload
+function HGSdataDownload(dbfname)
 %**************************************************************************
 %
 % HGSdataDownload
@@ -43,8 +43,7 @@ function HGSdataDownload
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
-clear all;
-clc;
+clear global HGSdata;
 
 global HGSdata
 
@@ -649,9 +648,9 @@ end
 %% Saving data
     
 
-save('HGSdata.mat','HGSdata');
+save(dbfname,'HGSdata');
 if info
-    fprintf('Saving HGSdata ... \n')
+    fprintf('Saving HGSdata ... to file %s\n',dbfname);
 end
 %% Nested functions
 

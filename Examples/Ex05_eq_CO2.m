@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC               
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC              
 %***********************************************************************************************************
 %
-% Example 03: CO2 dissociation equilibrium solved with K
+%  CO2 dissociation equilibrium solved with K
 %
 % 1 CO2    <-> 1 CO + (1/2)O2 
 %   1-z          z       z/2

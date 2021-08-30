@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC          
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC      
 %***********************************************************************************************************
 %
-% Example 00: Properties of single elements and mixtures
+%  Properties of single elements and mixtures
 
 clear
 
@@ -122,9 +120,3 @@ fprintf('cp=%f kJ/kgK \n',Cpkg);
 fprintf('hgssingle computes H, G and S properties for a single element \n')
 HGSsingle('O2','h',500,10)
  
-% hgsprop is also able to compute for a mixture of gases. The sintax is
-% shown below
-fprintf('hgsprop is also able to compute for a mixture of gases \n')
-[Mm,Cp,Cv,H,S,G,Rg,gamma,a]=HGSprop({'O2' 'N2'},[0.2 0.8],400,3)
-
-fprintf('Mm=%f \n', Mm);

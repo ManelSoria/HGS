@@ -91,7 +91,5 @@ end
 HGSdata.comb{end+1,1} = name;
 HGSdata.cspec{end+1,1} = species;
 HGSdata.cper{end+1,1} = percent;
-save('HGSdata.mat','HGSdata');
-fprintf('Saved data. \n')
 
 end

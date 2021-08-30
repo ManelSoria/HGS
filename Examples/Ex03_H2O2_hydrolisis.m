@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC                
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC               
 %***********************************************************************************************************
 %
-% Example 02: Adiabatic H2O2 decomposition
+% Adiabatic H2O2 decomposition
 %
 % Inlet: H2O2
 % Outlet: H2O + (1/2)O2 at Tp

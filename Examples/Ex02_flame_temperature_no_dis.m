@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC              
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC       
 %***********************************************************************************************************
 %
-% Example 01: CH4 combustion without dissociation
+% CH4 combustion without dissociation
 % 
 % Inlet: 6.25 CH4 + 25 O2 + 25.79/21 N2 at Tr
 % Outlet: 12.5 H2O + 12.5 O2 + 25.79/21 N2 at Tp

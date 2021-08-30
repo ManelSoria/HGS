@@ -1,15 +1,16 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC              
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC              
 %***********************************************************************************************************
 %
-% Example 07: isentropic comparison with RPA software
+% Isentropic comparison with RPA software
 
 clear; 
+clc
 
+fprintf('This example has to be revised\n');
+return
 
 
 species={'H','H2','H2O','H2O2','HO2','O','O2','O3','OH'}
@@ -26,6 +27,8 @@ P=20;
 P2=1;
 
 [~,neq,~]= HGSeq(species,n,T,P);
+
+fprintf('Fraction of each species after reaction\n');
 
 neq/sum(neq)
 
@@ -44,8 +47,10 @@ Rg
 
 a
 
+fprintf('Fraction of each species after isentropic expansion\n');
 
-[T2,n2,species,v2,M2,~]= HGSisentropic(species,neq,T,P,P2)
+
+[T2,n2,species,v2,M2,~]= HGSisentropic(species,neq,T,P,P2);
 
 
 n2/sum(n2)

@@ -1,13 +1,11 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC    
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC 
 %***********************************************************************************************************
 %
-% Example 04: Adiabatic flame temperature with dissociation
-%             this code is an example of how hgsTp works
+% Adiabatic flame temperature with dissociation
+% this code is an example to understand HGStp
 
 function Ex04b_adiabatic_flame_T
 
@@ -28,9 +26,10 @@ for i=1:length(T)
     [~,comp,~] = HGSeq(species,nr,T(i),P);
     Hout(i) =HGSprop(species,comp,T(i),P,'H');    
 end
-plot(T,Hout,'-or',T,Hin*ones(length(T),1),'-ob');
+plot(T,Hout,'-or',T,Hin*ones(length(T),1),'-ob','LineWidth',2);
 legend('Hout','Hin'); 
 xlabel('Temperature (K)'); ylabel('Enthalpy (kJ/molK)');
+set(gca,'FontSize',18)
 
 % Function to be solved to find T so that deltaH=0
     function DH=deltaH(Tp)
@@ -47,5 +46,6 @@ fprintf('deltaH @ 4000 K = %.2f kJ/molK \n',deltaH(4000));
 Tflame=fzero(@deltaH,3000,optimset('Display','iter'));
 
 fprintf('Adiabatic flame temperature Tp = %.2f K \n',Tflame);
+
 
 end

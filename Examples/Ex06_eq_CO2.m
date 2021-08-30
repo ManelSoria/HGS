@@ -1,12 +1,10 @@
 %***********************************************************************************************************
-%* HGS 2.0 (adapted from the original HGS 1.3) 
-%* Original by Arnau Miro, Pau Manent, Manel Soria 
-%* Adapted by Caleb Fuster
-%
-%* ESEIAAT UPC                
+% *HGS 2.0
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC               
 %***********************************************************************************************************
 %
-% Example 03: CO2 dissociation equilibrium solved with K
+% CO2 dissociation equilibrium solved with K
 % For p=1 bar, plot CO equilibrium fraction as a function of T
 
 clear; 
@@ -72,5 +70,8 @@ end
 toc
 
 % Plotting the solution
-semilogy(TT,XX,'o-');
+semilogy(TT,XX,'o-','LineWidth',2);
+xlabel('T (K)');
+ylabel('CO fraction');
+set(gca,'FontSize',18)
 grid
