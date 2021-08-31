@@ -37,7 +37,4 @@ HGSdata.comb(del) = [];
 HGSdata.cspec(del) = [];
 HGSdata.cper(del) = [];
 
-save('HGSdata.mat','HGSdata');
-fprintf('Saved data. \n')
-
 end
