@@ -13,6 +13,8 @@ RPAcomb = [0.4730081, 0.0000519, 0.5040833, 0.0063140, 0.0001233, 0.0164185];
 RPATis = 1534.1342;
 RPAis = [0.4833980, 0, 0.4833980, 0.0000007, 0, 0.0000183];
 
+% If you want the screenshot because you are a grouse that don't trust me
+% type: winopen('RPA_H2_O2_ex.PNG') on Command Window
 % Basic info
 
 of_ratio = 4.1; % The OF Ratio is done with kg oxidizer/ kg fuel
