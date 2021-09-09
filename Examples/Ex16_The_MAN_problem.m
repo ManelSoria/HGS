@@ -4,6 +4,7 @@
 % *ESEIAAT UPC      
 %***********************************************************************************************************
 %
+% Example by Caleb Fuster
 % The MAN problem
 % Wet air reaction with hydrocarbons. Using Relative humidity.
 % At ambient pressure and temperature.
