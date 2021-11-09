@@ -12,9 +12,9 @@
 % O2 (NIST) hv(404.36 K)-hl(119.62 K)=14.3753 kJ/mol
 % H2 (NIST) hv(413.96K)-hl(31.39K)=10.9495 kJ/mol
 
-function [Tp,np]=Ex06_LOX_combustion
+function [Tp,np]=Ex12_LOX_combustion
 
-clear; clc;
+clear;
 
 species={'H2','O2' , 'H2O','H','O','OH'};
 nr=[2;1;0;0;0;0]; % mol
@@ -23,7 +23,7 @@ P=10;
 
 options = [];
 
-[Tgas,ngas,~,~]= HGStp(species,nr,'T',300,P,options)
+[Tgas,ngas,~,~]= HGStp(species,nr,'T',300,P,options);
 
 
 % Enthalpy of liquid O2 at Tsat 10 bar (kJ/mol)
@@ -48,9 +48,10 @@ opt = optimset('Display','iter');
 Tp=fzero(@DeltaH,3000,opt);
 [~,np,~]= HGSeq(species,nr,Tp,P);
 
-fprintf('   HGStp <%f>   DeltaH<%f>\n',Tp1,Tp)
+fprintf('Inlets are gas at 300K: Tp= %f \n',Tgas)
+fprintf('Inlets are saturated liquid at 10bar: Tp= %f \n',Tp1)
 for ii=1:length(n)
-    fprintf('%s       <%f>             <%f>\n',species{ii},n(ii),np(ii))
+    fprintf('%s \t %f \t %f\n',species{ii},ngas(ii),np(ii))
 end
 
 end
