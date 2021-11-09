@@ -104,10 +104,10 @@ if x2-x1 > 1500  % Try to fit to a parabola and solve the eq.
    end
    
    % Don't allow the current range to extend the range specified
-   if x1p < options.xmin
+   if x1p < x1
       x1p = options.xmin;
    end
-   if x2p > options.xmax
+   if x2p > x2
       x2p = options.xmax;
    end
    
