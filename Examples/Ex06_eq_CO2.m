@@ -35,14 +35,17 @@ xCO2=@(z) nCO2(z)/nT(z);
 % written
 lhs=@(z) (xCO(z)*xO2(z)^0.5 / xCO2(z) ) * (p/pref)^(1+1/2-1);
 
-
+%      /nCO  *  nO2^1/2 \     / p  \
+% Kp =(------------------) * (------)^(1+1/2-1)
+%      \    nCO2        /     \pref/
+ 
 
 % With the following parameters of the solver
 options=optimset(...
-        'Display','none',...
-        'MaxIter',4000,...
-        'TolFun', 1.0e-10,...
-        'TolX',1.0e-4);
+        'Display','none',... % You dont want this info in Command Windows
+        'MaxIter',4000,...   % Max iteration
+        'TolFun', 1.0e-10,...% Kp tolerance
+        'TolX',1.0e-4);      % z tolerance
  
 zi=0.5; % a initial value (arbitrary) of z is given
 
