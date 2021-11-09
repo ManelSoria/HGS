@@ -66,7 +66,7 @@ end
 
 [S,Mm1,H1] = HGSprop(id,n0,T0,P0,'S','Mm','H');% Inlet properties
 
-[Tp,n,~,flag]=HGSeqcond(id,n0,'S',S,P1,options);
+[Tp,n,~,flag]=HGSeqcond(id,n0,'S',S,P1,options); % Searching T so that S=S0 and P=P1
 
 [Mm2,a2,H2] = HGSprop(id,n,Tp,P1,'Mm','a','H'); % Outlet properties
 

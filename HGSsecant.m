@@ -27,7 +27,7 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
 %           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',
-%                   1,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%                   1,'fchange',5,'info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -141,14 +141,15 @@ for ii=1:maxiter
     
     [yc,n]=f(xc,n); % Compute next value
     
+    
+    if info
+       fprintf('ii=%d x1=%e y1=%e xc=%e yc=%e x2=%e y2=%e \n',ii,x1,y1,xc,yc,x2,y2);
+    end
+    
     if abs(yc)<epsy || (abs(xc-x1)<epsx && abs(x2-xc)<epsx )% Stop if it is solved
         flag = 1;
         Tp=xc;
         break;
-    end
-    
-    if info
-       fprintf('ii=%d x1=%e y1=%e xc=%e yc=%e x2=%e y2=%e \n',ii,x1,y1,xc,yc,x2,y2);
     end
     
     if yc*y1>0 % Change limits
