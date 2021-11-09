@@ -13,8 +13,10 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
 % n0 --> [mols] Number of mols of each species
-% type --> 
-% V0 --> [K] Initial temperature
+% type --> Entry type that defines the state of the input. 
+%          It can be 'T' or 'H'
+% V0 --> Entry that should be for type:'T'   V0=T [K] input temperature
+%                                      'H'   V0=H [kJ] input enthalpy
 % P0 --> [bar] Inlet pressure
 % P1 --> [bar] Nozzle exit pressure
 % A --> [m^2] Nozzle exit area
@@ -26,9 +28,11 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 %                 .epsy Diferential S where the solver reachs the solution;
 %                 .fchange T difference where secant method is
 %                          changed by bisection method;
+%                 .maxrange Max range to fit in a parabola
 %                 .type Select between: 'Frozen' for frozen flow
 %                                       'Shifting' for shifting flow
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'')
+%               struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
+%                   'type','Shifting','info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------

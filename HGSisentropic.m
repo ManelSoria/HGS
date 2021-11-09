@@ -25,10 +25,12 @@ function [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
 %                          changed by bisection method;
 %                 .type Select between: 'Frozen' for frozen flow
 %                                       'Shifting' for shifting flow
+%                 .maxrange Max range to fit in a parabola
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
+%                   'type','Shifting','info',0,'dTp',100)
 %
 %**************************************************************************
 % Outputs:

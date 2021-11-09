@@ -21,13 +21,12 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                 .epsy Diferential S where the solver reachs the solution;
 %                 .fchange T difference where secant method is
 %                          changed by bisection method;
-%                 .type Select between: 'Frozen' for frozen flow
-%                                       'Shifting' for shifting flow
+%                 .maxrange Max range to fit in a parabola
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
 %           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',
-%                   1,'fchange',5,'info',0,'dTp',100)
+%                   1,'fchange',5,'info',0,'dTp',100,'maxrange',1500)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -53,6 +52,7 @@ def.epsy = 1;
 def.fchange = 500;
 def.info = 0;
 def.dTp = 100;
+def.maxrange = 1500;
 
 if exist('options','var') && ~isempty(options)
     fields = fieldnames(options);
@@ -70,6 +70,7 @@ epsy = def.epsy;
 fchange = def.fchange;
 info = def.info;
 dTp = def.dTp;
+maxrange = def.maxrange;
 
 %% Evaluation of Max and Min T
 
@@ -84,7 +85,7 @@ if y1*y2 > 0 % No sign change, sorry !
     return
 end
 
-if x2-x1 > 1500  % Try to fit to a parabola and solve the eq.
+if x2-x1 > maxrange  % Try to fit to a parabola and solve the eq.
    x3 = (x2+x1)/2;
    [y3,~] = f(x3,n0); 
    a = (y1 -(y2-y3)/(x2-x3)*x1 - y3 + x3*(y2-y3)/(x2-x3)) / (x1^2 + (x1-x3)*(x3^2-x2^2)/(x2-x3) - x3^2);
