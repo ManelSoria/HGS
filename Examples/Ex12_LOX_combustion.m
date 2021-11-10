@@ -24,15 +24,15 @@ P=10;
 % Enthalpy of liquid O2 at Tsat 10 bar (kJ/mol)
 h1_O2 = INIST('O2','h_pt',10,119.62);
 href_O2 = INIST('O2','h_pt',10,404.36);
-hO2= HGSsingle('O2','h',404.36,10) - (href_O2-h1_O2)/(1000*HGSsingle('O2','Mm')); 
+hO2= HGSsingle('O2','h',404.36,10); 
 
 % Enthalpy of liquid H2 at Tsat 10 bar (kJ/mol)
 h1_H2 = INIST('H2','h_pt',10,31.39);
 href_H2 = INIST('H2','h_pt',10,413.96);
-hH2= HGSsingle('H2','h',413.96,10) - (href_H2-h1_H2)/(1000*HGSsingle('H2','Mm')); 
+hH2= HGSsingle('H2','h',413.96,10); 
 
 % Enthalpy of stoichiometric mixture
-HinLIQ=2*hH2+1*hO2;
+HinLIQ=2*hH2+1*hO2-2*(href_H2-h1_H2)*HGSsingle('H2','Mm')/1000-(href_O2-h1_O2)*HGSsingle('O2','Mm')/1000;
 
 
 % HGStp call
@@ -40,8 +40,8 @@ HinLIQ=2*hH2+1*hO2;
 
 
 % That is what HGStp does
-opt = optimoptions(@fsolve,'Display','iter','FunctionTolerance',1e-8,'OptimalityTolerance',1e-8);
-Tp=fsolve(@(T)DeltaH(T)-HinLIQ,3000,opt);      % Solver, in our cas we use a HGSsecant
+opt = optimset('Display','off','TolFun',1e-14,'TolX',1e-14);
+Tp=fzero(@(T)DeltaH(T),2500,opt);      % Solver (fsolve is a sh*t and it has a scaling problem so we use fzero), in our cas we use a HGSsecant
 [~,np,~]= HGSeq(species,nr,Tp,P); % After getting Tp, mols equilibrium in a T P
 
     function DeltaH=DeltaH(Tprod)
@@ -54,7 +54,8 @@ Tp=fsolve(@(T)DeltaH(T)-HinLIQ,3000,opt);      % Solver, in our cas we use a HGS
         
         % Has to be 0 for solving. Pre combustion and Post combusiton
         % enthalpy must be equal
-        DeltaH = (Hout);
+%         fprintf('T = %.3f, Hout= %e, Hin= %e, hastobe0= %f\n',T,Hout,HinLIQ,Hout-HinLIQ)
+        DeltaH = (Hout-HinLIQ);
     end
 
 
