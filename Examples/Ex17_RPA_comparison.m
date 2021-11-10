@@ -7,16 +7,22 @@
 % RPA vs HGStp && HGSisentropic.
 % LH2-LOX reaction
 
-% RPA data (ignore H2O2 and HO2)
-RPATcomb = 3004.0779;
+% RPA is a code for rocket combustion and expansion in a nozzle.
+% Search it on the web for more info. https://www.rocket-propulsion.com/index.htm
+% We compare our HGS algorithms with their results for a LH2-LOX combustion
+
+% RPA data (ignore H2O2 and HO2 species)
+% Combustion data
+RPATcomb = 3004.0779; 
 RPAcomb = [0.4730081, 0.0000519, 0.5040833, 0.0063140, 0.0001233, 0.0164185];
+% Exit of the isentropic expansion
 RPATis = 1534.1342;
 RPAis = [0.4833980, 0, 0.4833980, 0.0000007, 0, 0.0000183];
 
 % If you want the screenshot because you are a grouse that don't trust me
 % type: winopen('RPA_H2_O2_ex.PNG') on Command Window
-% Basic info
 
+% Basic info
 of_ratio = 4.1; % The OF Ratio is done with kg oxidizer/ kg fuel
 species = {'H2', 'O2', 'H2O', 'OH', 'O', 'H'};
 n = zeros(length(species),1);
@@ -46,6 +52,7 @@ deltaH_O2 = 393.3914211 * mO2 ;
 H_H2_HGS = HGSsingle('H2','h',Tref,Pin)*n(1);
 H_O2_HGS = HGSsingle('O2','h',Tref,Pin)*n(2);
 
+% Inlet enthalpy
 Hin = H_H2_HGS - deltaH_H2 + H_O2_HGS - deltaH_O2;
 
 % Now, we run the combustion with HGStp
@@ -54,15 +61,17 @@ Hin = H_H2_HGS - deltaH_H2 + H_O2_HGS - deltaH_O2;
 % Now, we run the isentropic expansion
 [Tis,nis,~,v2,M2] = HGSisentropic(species,ncomb,Tcomb,Pin,Pexit);
 
+
+% Comparing results
 fprintf('Post combustion\n')
-fprintf('RPA - <%.3f>  HGStp - <%.3f> \n',RPATcomb,Tcomb)
+fprintf('RPA - <%.3f>  HGS   - <%.3f> \n',RPATcomb,Tcomb)
 for ii =1:length(species)
     fprintf('%s - <%.3e> - <%.3e> \n',species{ii},ncomb(ii)/sum(ncomb),RPAcomb(ii))
 end
 
 fprintf('\n')
 fprintf('Post expansion\n')
-fprintf('RPA - <%.3f>  HGStp - <%.3f> \n',RPATis,Tis)
+fprintf('RPA - <%.3f>  HGS   - <%.3f> \n',RPATis,Tis)
 for ii =1:length(species)
     fprintf('%s - <%.3e> - <%.3e> \n',species{ii},nis(ii)/sum(nis),RPAis(ii))
 end
