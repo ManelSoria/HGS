@@ -1,4 +1,4 @@
-function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
+function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,Fro_Shift,options)
 %**************************************************************************
 %
 % [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
@@ -85,7 +85,9 @@ end
 
 options = def;
 
-
+if ~exist('Fro_Shift','var') || strcmpi(Fro_Shift,'')
+    Fro_Shift = 'Shifting';
+end
 
 %% Secant method resolution
 
@@ -93,7 +95,7 @@ options = def;
 
 
     function [H,n] = hastobezero(T,n)
-        if ~isfield(options,'type') || strcmpi(options.type,'Shifting')
+        if strcmpi(Fro_Shift,'Shifting')
             [~,n,~]=HGSeq(id,n,T,P,[]);
         end
         [H] = HGSprop(id,n,T,P,type)-V0;

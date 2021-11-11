@@ -1,4 +1,4 @@
-function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
+function [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_Shift,options1,options2)
 %**************************************************************************
 %
 % [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
@@ -16,8 +16,13 @@ function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
 % T0 --> [K] Initial temperature
 % P0 --> [bar] Inlet pressure
 % P1 --> [bar] Exit pressure
+% Pa --> [bar] Atmospheric pressure
 % A --> [m^2] Exit area
-% options --> Structure with the options for the secant method. 
+% Fro_Shift --> Select between: 'Frozen' for frozen flow
+%                               'Shifting' for shifting flow
+%                               'Combined' for shifting flow until throat
+%                                       and frozen until end 
+% options1 --> Structure with the options for the secant method. 
 %                 .xmin [K] Temperature minimum for the solver;
 %                 .xmax [K] Temperature maximum for the solver;
 %                 .maxiter Max iterations for the solver;
@@ -25,15 +30,22 @@ function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
 %                 .epsy Diferential S where the solver reachs the solution;
 %                 .fchange T difference where secant method is
 %                          changed by bisection method;
-%                 .type Select between: 'Frozen' for frozen flow
-%                                       'Shifting' for shifting flow
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'')
+%                 .maxrange Max range to fit in a parabola
+%                 .info Detailed info == 1; No info == 0.
+%                 .dTp Improve the velocity with the approximation of
+%                 parabola. +- dTp
+%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,
+%                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
+% options2 --> Structure with the options as options1 but for Pressure
+%           struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
+%                   'fchange',1,'info',0)
 %
 % Outputs:
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
-% n --> [mols] Species resultant mols
+% np --> [mols] Species resultant mols
 % species --> String or numbers of species
+% M --> [] Exit Mach
 % F --> [N] Thrust
 % Isp --> [s^-1]Specific impulse, g0 = 9.807 m/s^2
 % flag --> Solver error detection: 
@@ -46,8 +58,30 @@ function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
-[Tp,n,species,v2,~,flag] = HGSisentropic(species,n0,T0,P0,P1,options);
-[MM] = HGSprop(species,n,[],[],'Mm');
+if ~exist('options1','var')
+    options1 = [];
+end
+if ~exist('options2','var')
+    options2 = struct('xmin',P1,'xmax',5/6*P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
+end
+
+if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Frozen')
+    [Tp,np,species,M,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,'P',P1,options1);
+elseif strcmp(Fro_Shift,'Combinated')
+    [~,nt,species,~,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,'M',1,options1,options2);
+    if flag ~=1
+       return 
+    end
+    [Tp,np,species,M,flag] = HGSisentropic(species,nt,T0,P0,Fro_Shift,'P',P1,options1);
+else
+    error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
+end
+if flag ~=1
+   return 
+end
+
+[MM,a] = HGSprop(species,np,Tp,P1,'Mm','a');
+v2=M*a;
 m = MM*sum(n);
 F = m*v2-A*(P1-Pa);
 g0 = 9.807;

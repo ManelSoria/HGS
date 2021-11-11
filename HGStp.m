@@ -79,6 +79,6 @@ else
     H = V0;
 end
 
-[Tp,n,~,flag]=HGSeqcond(id,n0,'H',H,P,options);
+[Tp,n,~,flag]=HGSeqcond(id,n0,'H',H,P,'Shifting',options);
 
 end

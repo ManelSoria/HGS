@@ -1,4 +1,4 @@
-function [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
+function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typeexit,V1,options1,options2)
 %**************************************************************************
 %
 % [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
@@ -14,8 +14,13 @@ function [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
 % n0 --> [mols] Number of mols of each species
 % T0 --> [K] Initial temperature
 % P0 --> [bar] Inlet pressure
-% P1 --> [bar] Exit pressure
-% options --> Structure with the options for the secant method. 
+% Fro_Shift --> Select between: 'Frozen' for frozen flow
+%                               'Shifting' for shifting flow
+% typeexit --> Entry type that defines the state of the input. 
+%               It can be 'P' or 'M'
+% V1 --> Entry that should be for type:'P'   V1=P [bar] output pressure
+%                                      'M'   V1=M [] output Mach
+% options1 --> Structure with the options for the secant method. 
 %                 .xmin [K] Temperature minimum for the solver;
 %                 .xmax [K] Temperature maximum for the solver;
 %                 .maxiter Max iterations for the solver;
@@ -23,14 +28,15 @@ function [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
 %                 .epsy Diferential S where the solver reachs the solution;
 %                 .fchange T difference where secant method is
 %                          changed by bisection method;
-%                 .type Select between: 'Frozen' for frozen flow
-%                                       'Shifting' for shifting flow
 %                 .maxrange Max range to fit in a parabola
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
-%                   'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,
+%                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
+% options2 --> Structure with the options as options1 but for Pressure
+%           struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
+%                   'fchange',1,'info',0)
 %
 %**************************************************************************
 % Outputs:
@@ -38,12 +44,15 @@ function [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
 % Tp --> [K] Exit temperature
 % n --> [mols] Species resultant mols
 % species --> String or numbers of species
-% v2 --> [m/s] Velocity of the mixture
-% M2 --> [Mach] Mach of the mixture
+% V2 --> If typeexit 'P' ->[Mach] Mach of the mixture at a P
+%        If typeexit 'M' ->[bar] Pressure at the Mach
 % flag --> Solver error detection: 
 %                 1  Solver has reached the solution
-%                -1  Solver failed. Maximum iterations
-%                -2  Solver failed. Initial sign change not found
+%                -1  Solver failed. Maximum iterations in T loop
+%                -2  Solver failed. Initial sign change not found in T loop
+%                Only for typeexit=='M'
+%                -3  Solver failed. Maximum iterations in P loop
+%                -4  Solver failed. Initial sign change not found in P loop
 %
 %**************************************************************************
 % *HGS 2.0
@@ -54,8 +63,8 @@ function [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
 global HGSdata; HGSload
 [id] = HGSid(species);
 
-if ~exist('options','var')
-   options = []; 
+if ~exist('options1','var')
+   options1 = []; 
 end
 
 % Rebuild mixtures
@@ -64,21 +73,47 @@ if max(id) >= length(HGSdata.Mm)
    [id] = HGSid(species);
 end
 
-% compute initial entropy and enthalpy
+% Compute initial entropy and enthalpy, mm
 
 [S,Mm1,H1] = HGSprop(id,n0,T0,P0,'S','Mm','H');% Inlet properties
+m=sum(n0)*Mm1*1e-3;
+h1=H1/m;
 
-[Tp,n,~,flag]=HGSeqcond(id,n0,'S',S,P1,options); % Searching T so that S=S0 and P=P1
+if strcmpi(typeexit,'P')
+    P1 = V1;
+    [Tp,n,~,flag]=HGSeqcond(id,n0,'S',S,V1,Fro_Shift,options1); % Searching T so that S=S0 and P=P1
+    [a2,H2] = HGSprop(id,n,Tp,P1,'a','H'); % Outlet properties
 
-[Mm2,a2,H2] = HGSprop(id,n,Tp,P1,'Mm','a','H'); % Outlet properties
+    h2=H2/m;
 
-m1=sum(n0)*Mm1*1e-3;
-h1=H1/m1;
-m2=sum(n)*Mm2*1e-3;
-h2=H2/m2;
+    v2=sqrt(2*1000*(h1-h2)); % Enthalpy must be en J/kg !
 
-v2=sqrt(2*1000*(h1-h2)); % Enthalpy must be en J/kg !
+    V2=v2/a2;
+elseif strcmpi(typeexit,'M')
+    if ~exist('options2','var') || isempty(options2)
+        options2 = struct('xmin',0.001,'xmax',5/6*P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
+    end
+    [V2,n,flag] = HGSsecant(@hastobeM,n0,options2);
+   if flag~=1
+       Tp=[];n=[];V2=[];flag = flag-2;
+       return
+   end
+   [Tp,n,~,flag]=HGSeqcond(id,n,'S',S,V2,Fro_Shift,options1);
+end
 
-M2=v2/a2;
+    function [zeroM,n] = hastobeM(Pstar,n)
+        function [zeroS,n] = hastobeS(Tstar,n)
+            if strcmpi(Fro_Shift,'Shifting')
+               [species,n,~] = HGSeq(species,n,Tstar,Pstar);
+            end
+            S1 = HGSprop(species,n,Tstar,Pstar,'S'); 
+            zeroS = (S1 - S);   
+        end          
+        [Tstar,n] = HGSsecant(@hastobeS,n);
+        [a,H2] = HGSprop(species,n,Tstar,Pstar,'a','H');   
+        v2=sqrt(2*1000*(h1-H2/m));
+        zeroM = V1 - v2/a;
+    end
+
 
 end
