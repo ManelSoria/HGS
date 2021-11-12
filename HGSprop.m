@@ -8,18 +8,18 @@ function [varargout] = HGSprop(species,n,T,P,varargin)
 %
 %**************************************************************************
 %
-% HGSprop returns the properties of the mixture of gasses
+% HGSprop returns the properties of a mixture of gasses
 %
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or numbers of species
+% species --> String or code of species
 % n --> [mols] Number of mols per species
 % T --> [K] Temperature
 % P --> [bar] Pressure
 % varargin --> Expected return: 'Mm' 'Cp' 'Cv' 'H' 'S' 'G' 'Rg' 'gamma' 'a'
 %                                If it is empty, all the properties will be
-%                                return
+%                                returned
 %
 % Outputs:
 %--------------------------------------------------------------------------

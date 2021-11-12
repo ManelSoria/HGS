@@ -19,8 +19,8 @@ function [Res] = HGSsingle(species,property,T,P)
 %--------------------------------------------------------------------------
 % Res --> Property result
 %           Mm [g/mol]
-%           Cp [kJ/(mol*K)]
-%           Cv [kJ/(mol*K)]
+%           cp [kJ/(mol*K)]
+%           cv [kJ/(mol*K)]
 %           h [kJ/mol]
 %           s [kJ/(mol*K)]
 %           g [kJ/mol]

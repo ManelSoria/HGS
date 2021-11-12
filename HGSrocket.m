@@ -5,7 +5,7 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 %
 %**************************************************************************
 % 
-% HGSrocket calculates the temperatures, mixture and exist parameter (v,M
+% HGSrocket calculates the temperatures, mixture and exit parameter (v,M
 % T and Isp)
 %
 %**************************************************************************
