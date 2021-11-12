@@ -1,7 +1,8 @@
 function [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_Shift,options1,options2)
 %**************************************************************************
 %
-% [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
+% [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,
+%                                          Fro_Shift,options1,options2)
 %
 %**************************************************************************
 % 
@@ -52,6 +53,9 @@ function [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_S
 %                 1  Solver has reached the solution
 %                -1  Solver failed. Maximum iterations
 %                -2  Solver failed. Initial sign change not found
+%                Only for Fro_shift = 'Combinated'
+%                -3  Solver failed. Maximum iterations in P loop
+%                -4  Solver failed. Initial sign change not found in P loop
 %
 %**************************************************************************
 % *HGS 2.0
@@ -67,6 +71,7 @@ if max(id) >= length(HGSdata.Mm)
    [id] = HGSid(species);
 end
 
+% Options
 if ~exist('options1','var')
     options1 = [];
 end
@@ -74,30 +79,41 @@ if ~exist('options2','var')
     options2 = struct('xmin',P1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
 end
 
+% Total mass
 [mm] = HGSprop(id,n0,T0,P0,'Mm');
 m=sum(n0)*mm*1e-3;
 
 if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Frozen')
+    % Shifting and Frozen doesnt require extra action
     [Tp,np,~,M,flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',P1,options1);
+    
 elseif strcmp(Fro_Shift,'Combinated')
+    % For a case of Shifting until the throat and Frozen for the rest of
+    % the expansion
+    % Throat M=1
     [Tt,nt,~,Pt,flag] = HGSisentropic(id,n0,T0,P0,'Shifting','M',1,options1,options2);
     if flag ~=1
        return 
     end
+    % Going back until the nozzle start but with a frozen composition 
     [v2,H2] = HGSprop(id,nt,Tt,Pt,'a','H');
-    H1 = H2 +(m/2000)*v2^2;
+    H1 = H2 +(m/2000)*v2^2; % Enthalpy of the start v=0
     [TinitF,~,~,flag]=HGSeqcond(id,nt,'H',H1,P0,'Frozen',options1);
     if flag ~=1
        return 
     end
+    % Frozen expansion
     [Tp,np,~,M,flag] = HGSisentropic(id,nt,TinitF,P0,'Frozen','P',P1,options1);
 else
     error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
 end
+
+% Flag error return
 if flag ~=1
    return 
 end
 
+% Other properties of the nozzle exit
 [a] = HGSprop(id,np,Tp,P1,'a');
 v2=M*a;
 F = m*v2-A*(P1-Pa);

@@ -1,7 +1,8 @@
 function [Tp,n,species,param,flag] = HGSrocket(species,n0,typevec,V0,Pvec,A,options1,options2)
 %**************************************************************************
 %
-% [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,options)
+% [Tp,n,species,param,flag] = HGSrocket(species,n0,typevec,V0,Pvec,A,
+%                                       options1,options2)
 %
 %**************************************************************************
 % 
@@ -13,12 +14,17 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,typevec,V0,Pvec,A,opti
 %--------------------------------------------------------------------------
 % species --> String or numbers of species
 % n0 --> [mols] Number of mols of each species
-% type --> Entry type that defines the state of the input. 
-%          It can be 'T' or 'H'
-% V0 --> Entry that should be for type:'T'   V0=T [K] input temperature
-%                                      'H'   V0=H [kJ] input enthalpy
-% P0 --> [bar] Inlet pressure
-% P1 --> [bar] Nozzle exit pressure
+% typevec --> {1} Entry type that defines the state of the combustion input. 
+%                 It can be 'T' or 'H'
+%             {2} Select between: 'Frozen' for frozen flow
+%                                 'Shifting' for shifting flow
+%                                 'Combined' for shifting flow until throat
+%                                           and frozen until end 
+% V0 --> Entry that should be for typevec{1}:'T'   V0=T [K] input temperature
+%                                            'H'   V0=H [kJ] input enthalpy
+% Pvec --> (1)[bar] Inlet pressure
+%          (2)[bar] Nozzle exit pressure
+%          (3)[bar] Atmospheric pressure
 % A --> [m^2] Nozzle exit area
 % options --> Structure with the options for the secant method. 
 %                 .xmin [K] Temperature minimum for the solver;
@@ -33,11 +39,16 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,typevec,V0,Pvec,A,opti
 %                                       'Shifting' for shifting flow
 %               struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
 %                   'type','Shifting','info',0,'dTp',100)
+% options2 --> Structure with the options as options1 but for Pressure
+%           struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
+%                   'fchange',1,'info',0)
 %
 % Outputs:
 %--------------------------------------------------------------------------
-% Tp --> [K] Exit temperature
-% n --> [mols] Species resultant mols
+% Tp --> (1)[K] Exit temperature of the CC
+%        (2)[K] Exit temperature of the nozzle
+% n --> (1)[mols] Species resultant mols of the CC
+%       (2)[mols] Species resultant mols of the nozzle    
 % species --> String or numbers of species
 % param --> Exit parameter: param(1) = Mach
 %                           param(2) = Thrust [N]
@@ -46,6 +57,9 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,typevec,V0,Pvec,A,opti
 %                 1  Solver has reached the solution
 %                -1  Solver failed. Maximum iterations
 %                -2  Solver failed. Initial sign change not found
+%                Only for typevec{2}=='Combinated'
+%                -3  Solver failed. Maximum iterations in P loop
+%                -4  Solver failed. Initial sign change not found in P loop
 %
 %**************************************************************************
 % *HGS 2.0
@@ -61,6 +75,7 @@ if max(id) >= length(HGSdata.Mm)
    [id] = HGSid(species);
 end
 
+% Options
 if ~exist('options1','var')
     options1 = [];
 end

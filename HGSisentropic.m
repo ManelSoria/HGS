@@ -1,7 +1,8 @@
 function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typeexit,V1,options1,options2)
 %**************************************************************************
 %
-% [Tp,n,species,v2,M2,flag] = HGSisentropic(species,n0,T0,P0,P1,options)
+% [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,
+%                                        typeexit,V1,options1,options2)
 %
 %**************************************************************************
 % 
@@ -90,22 +91,27 @@ if strcmpi(typeexit,'P')
 
     V2=v2/a2;
 elseif strcmpi(typeexit,'M')
+    % To avoid problems with imaginary numbers
     if strcmpi('Frozen',Fro_Shift)
         P0=P0*0.9; 
     end
+    % Options are diferent for P searches
     if ~exist('options2','var') || isempty(options2)
         options2 = struct('xmin',0.1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
     else
         options2 = UpdateOpt(options2);
     end
+    % Pressure search
     [V2,n,flag] = HGSsecant(@hastobeM,n0,options2);
+    % Flag error return
     if flag~=1
         Tp=[];n=[];V2=[];flag = flag-2;
         return
     end    
+    % T calculation
     [Tp,n,~,flag]=HGSeqcond(id,n,'S',S,V2,Fro_Shift,options1);
 else
-    error('Typeexit is not accepted by')
+    error('Typeexit is not accepted by this function. Only accepted P and M')
 end
 
     function [zeroM,n] = hastobeM(Pstar,n)
