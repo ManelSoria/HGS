@@ -77,7 +77,7 @@ for ii = 1:length(RH)
 
     % HGStp
 
-    [Tp(ii),n(ii,:),species,~] = HGStp(species,n0,'H',Hin,1);
+    [Tp(ii),species,n(ii,:),~] = HGStp(species,n0,'H',Hin,1);
     nper(ii,:) = n(ii,:)/sum(n(ii,:));
     
 end

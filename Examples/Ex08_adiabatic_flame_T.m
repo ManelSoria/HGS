@@ -7,7 +7,7 @@
 % Adiabatic flame temperature with dissociation
 % this code is an example to understand HGStp
 
-function Ex04b_adiabatic_flame_T
+function Ex08_adiabatic_flame_T
 
 clear; clc;
 

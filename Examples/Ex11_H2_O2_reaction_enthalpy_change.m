@@ -19,5 +19,5 @@ nr=[2;1;0;0;0;0]; % mol
 % Solver options
 options = [];
 
-[Tp,np,~,~] = HGStp(species,nr,'T',298,1,options)
+[Tp,~,np,~] = HGStp(species,nr,'T',298,1,options)
 np/sum(np)

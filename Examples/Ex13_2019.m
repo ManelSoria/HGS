@@ -50,7 +50,7 @@ a
 fprintf('Fraction of each species after isentropic expansion\n');
 
 
-[T2,n2,species,v2,M2,~]= HGSisentropic(species,neq,T,P,P2);
+[T2,species,n2,v2,M2,~]= HGSisentropic(species,neq,T,P,'Shifiting','P',P2);
 
 
 n2/sum(n2)

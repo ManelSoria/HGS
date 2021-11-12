@@ -1,7 +1,7 @@
-function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
+function [Tp,species,n,flag] = HGStp(species,n0,type,V0,P,options)
 %**************************************************************************
 %
-% [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
+% [Tp,species,n,flag] = HGStp(species,n0,type,V0,P,options)
 %
 %**************************************************************************
 % 
@@ -79,6 +79,6 @@ else
     H = V0;
 end
 
-[Tp,n,~,flag]=HGSeqcond(id,n0,'H',H,P,'Shifting',options);
+[Tp,~,n,flag]=HGSeqcond(id,n0,'H',H,P,'Shifting',options);
 
 end

@@ -80,7 +80,7 @@ for rof=[2 3 4 5 6]
     % We use the previous value of T2 to begin the iterations
     % fzero is more robust solver in this case, but decreasing the
     % tolerance we can solve the problem with fsolve, that is faster
-    [T2,~,~,vt,~] = HGSisentropic(species,ni_calc,Tc,Pc,P2);
+    [T2,~,~,vt,~] = HGSisentropic(species,ni_calc,Tc,Pc,'Shifting','P',P2);
     T2s=T2;
     
     fprintf('Nozzle outlet temperature T2=%f \n',T2);

@@ -1,7 +1,7 @@
-function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,Fro_Shift,options)
+function [Tp,species,n,flag] = HGSeqcond(species,n0,type,V0,P,Fro_Shift,options)
 %**************************************************************************
 %
-% [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
+% [Tp,species,n,flag] = HGSeqcond(species,n0,type,V0,P,options)
 %
 %**************************************************************************
 % 

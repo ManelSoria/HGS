@@ -30,7 +30,7 @@ plot(T,Hout,'-r',T,Hin*ones(length(T),1),'-b','LineWidth',2)
 hold on
 
 
-[Tp,np,~,~] = HGStp(species,nr,'T',Tr,P);
+[Tp,~,np,~] = HGStp(species,nr,'T',Tr,P);
 flameHout = HGSprop(species,np,Tp,P,'H');
 plot(Tp,flameHout,'ok','MarkerSize',14,'MarkerFaceColor','k');
 

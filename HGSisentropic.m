@@ -1,7 +1,7 @@
-function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typeexit,V1,options1,options2)
+function [Tp,species,n,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typeexit,V1,options1,options2)
 %**************************************************************************
 %
-% [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,
+% [Tp,species,n,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,
 %                                        typeexit,V1,options1,options2)
 %
 %**************************************************************************
@@ -82,7 +82,7 @@ h1=H1/m;
 
 if strcmpi(typeexit,'P')
     P1 = V1;
-    [Tp,n,~,flag]=HGSeqcond(id,n0,'S',S,V1,Fro_Shift,options1); % Searching T so that S=S0 and P=P1
+    [Tp,~,n,flag]=HGSeqcond(id,n0,'S',S,V1,Fro_Shift,options1); % Searching T so that S=S0 and P=P1
     [a2,H2] = HGSprop(id,n,Tp,P1,'a','H'); % Outlet properties
 
     h2=H2/m;
@@ -109,7 +109,7 @@ elseif strcmpi(typeexit,'M')
         return
     end    
     % T calculation
-    [Tp,n,~,flag]=HGSeqcond(id,n,'S',S,V2,Fro_Shift,options1);
+    [Tp,~,n,flag]=HGSeqcond(id,n,'S',S,V2,Fro_Shift,options1);
 else
     error('Typeexit is not accepted by this function. Only accepted P and M')
 end

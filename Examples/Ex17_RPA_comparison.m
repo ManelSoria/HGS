@@ -56,10 +56,10 @@ H_O2_HGS = HGSsingle('O2','h',Tref,Pin)*n(2);
 Hin = H_H2_HGS - deltaH_H2 + H_O2_HGS - deltaH_O2;
 
 % Now, we run the combustion with HGStp
-[Tcomb, ncomb] = HGStp(species,n,'H', Hin, Pin);
+[Tcomb,~, ncomb] = HGStp(species,n,'H', Hin, Pin);
 
 % Now, we run the isentropic expansion
-[Tis,nis,~,v2,M2] = HGSisentropic(species,ncomb,Tcomb,Pin,Pexit);
+[Tis,~,nis,v2,M2] = HGSisentropic(species,ncomb,Tcomb,Pin,'Shifting','P',Pexit);
 
 
 % Comparing results

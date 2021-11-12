@@ -1,7 +1,7 @@
-function [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_Shift,options1,options2)
+function [Tp,species,np,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_Shift,options1,options2)
 %**************************************************************************
 %
-% [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,
+% [Tp,species,np,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,
 %                                          Fro_Shift,options1,options2)
 %
 %**************************************************************************
@@ -86,13 +86,13 @@ m=sum(n0)*mm*1e-3;
 
 if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Frozen')
     % Shifting and Frozen doesnt require extra action
-    [Tp,np,~,M,flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',P1,options1);
+    [Tp,~,np,M,flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',P1,options1);
     
 elseif strcmp(Fro_Shift,'Combined')
     % For a case of Shifting until the throat and Frozen for the rest of
     % the expansion
     % Throat M=1
-    [Tt,nt,~,Pt,flag] = HGSisentropic(id,n0,T0,P0,'Shifting','M',1,options1,options2);
+    [Tt,~,nt,Pt,flag] = HGSisentropic(id,n0,T0,P0,'Shifting','M',1,options1,options2);
     if flag ~=1
        return 
     end
@@ -104,7 +104,7 @@ elseif strcmp(Fro_Shift,'Combined')
        return 
     end
     % Frozen expansion
-    [Tp,np,~,M,flag] = HGSisentropic(id,nt,TinitF,P0,'Frozen','P',P1,options1);
+    [Tp,~,np,M,flag] = HGSisentropic(id,nt,TinitF,P0,'Frozen','P',P1,options1);
 else
     error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
 end

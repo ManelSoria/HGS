@@ -31,7 +31,7 @@ species = {'H2', 'O2', 'H2O', 'OH', 'O', 'H'};
 n0 = [2.8,1.01,0,0,0,0];
 P0=62;
 
-[Tp,np,~,~] = HGStp(species,n0,'H',Hin,P0);
+[Tp,~,np,~] = HGStp(species,n0,'H',Hin,P0);
 
 %% The expansion
 p = 60:-1:1;

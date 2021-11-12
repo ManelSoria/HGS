@@ -85,13 +85,13 @@ end
 
 
 % Combustion chamber
-[Tp(1),n(1,:),species,flag(1)] = HGStp(id,n0,typevec{1},V0,Pvec(1),options1);
+[Tp(1),~,n(1,:),flag(1)] = HGStp(id,n0,typevec{1},V0,Pvec(1),options1);
 
 if flag(1)~=1
    return 
 end
 
 % Nozzle
-[Tp(2),n(2,:),~,param(1),param(2),param(3),flag(2)] = HGSnozzle(id,n(1,:),Tp(1),Pvec(1),Pvec(2),Pvec(3),A,typevec{2},options1,options2);
+[Tp(2),~,n(2,:),param(1),param(2),param(3),flag(2)] = HGSnozzle(id,n(1,:),Tp(1),Pvec(1),Pvec(2),Pvec(3),A,typevec{2},options1,options2);
 
 end
