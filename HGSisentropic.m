@@ -19,8 +19,8 @@ function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 %                               'Shifting' for shifting flow
 % typeexit --> Entry type that defines the state of the input. 
 %               It can be 'P' or 'M'
-% V1 --> Entry that should be for type:'P'   V1=P [bar] output pressure
-%                                      'M'   V1=M [] output Mach
+% V1 --> Value for type:'P'   V1=P [bar] output pressure
+%                       'M'   V1=M [] output Mach. Has to be >=1
 % options1 --> Structure with the options for the secant method. 
 %                 .xmin [K] Temperature minimum for the solver;
 %                 .xmax [K] Temperature maximum for the solver;
@@ -95,13 +95,13 @@ elseif strcmpi(typeexit,'M')
     if strcmpi('Frozen',Fro_Shift)
         P0=P0*0.9; 
     end
-    % Options are diferent for P searches
+    % Change options to solve for P, imposing M
     if ~exist('options2','var') || isempty(options2)
         options2 = struct('xmin',0.1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
     else
         options2 = UpdateOpt(options2);
     end
-    % Pressure search
+    % Pressure search, imposing M
     [V2,n,flag] = HGSsecant(@hastobeM,n0,options2);
     % Flag error return
     if flag~=1
@@ -130,6 +130,7 @@ end
     end
     
     function opt = UpdateOpt(options)
+        %Overwrite default options with the new ones
         opt.xmin = 0.1;
         opt.xmax = P0;
         opt.maxiter = 50;

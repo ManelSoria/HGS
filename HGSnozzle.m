@@ -22,8 +22,8 @@ function [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_S
 % Fro_Shift --> Select between: 'Frozen' for frozen flow
 %                               'Shifting' for shifting flow
 %                               'Combined' for shifting flow until throat
-%                                       and frozen until end 
-% options1 --> Structure with the options for the secant method. 
+%                                       and frozen from throat to exit 
+% options1 --> Structure with the options for the secant method. (optional)
 %                 .xmin [K] Temperature minimum for the solver;
 %                 .xmax [K] Temperature maximum for the solver;
 %                 .maxiter Max iterations for the solver;
@@ -37,9 +37,10 @@ function [Tp,np,species,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_S
 %                 parabola. +- dTp
 %           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,
 %                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
-% options2 --> Structure with the options as options1 but for Pressure
+% options2 --> Structure with the options as options1 but for Pressure (optional)
 %           struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
 %                   'fchange',1,'info',0)
+%                   Note xmax must be equal or less than inlet Pressure (P0)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -76,7 +77,7 @@ if ~exist('options1','var')
     options1 = [];
 end
 if ~exist('options2','var')
-    options2 = struct('xmin',P1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
+    options2 = [];
 end
 
 % Total mass
@@ -87,7 +88,7 @@ if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Frozen')
     % Shifting and Frozen doesnt require extra action
     [Tp,np,~,M,flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',P1,options1);
     
-elseif strcmp(Fro_Shift,'Combinated')
+elseif strcmp(Fro_Shift,'Combined')
     % For a case of Shifting until the throat and Frozen for the rest of
     % the expansion
     % Throat M=1
