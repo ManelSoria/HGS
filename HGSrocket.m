@@ -1,4 +1,4 @@
-function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,options)
+function [Tp,n,species,param,flag] = HGSrocket(species,n0,typevec,V0,Pvec,A,options1,options2)
 %**************************************************************************
 %
 % [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,options)
@@ -31,7 +31,7 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 %                 .maxrange Max range to fit in a parabola
 %                 .type Select between: 'Frozen' for frozen flow
 %                                       'Shifting' for shifting flow
-%               struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
+%               struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
 %                   'type','Shifting','info',0,'dTp',100)
 %
 % Outputs:
@@ -39,10 +39,9 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 % Tp --> [K] Exit temperature
 % n --> [mols] Species resultant mols
 % species --> String or numbers of species
-% param --> Exit parameter: param(1) = v [m/s]
-%                           param(2) = Mach
-%                           param(3) = Thrust [N]
-%                           param(4) = Isp
+% param --> Exit parameter: param(1) = Mach
+%                           param(2) = Thrust [N]
+%                           param(3) = Isp
 % flag --> Solver error detection: 
 %                 1  Solver has reached the solution
 %                -1  Solver failed. Maximum iterations
@@ -53,21 +52,31 @@ function [Tp,n,species,param,flag] = HGSrocket(species,n0,type,V0,P0,P1,A,option
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
-% Combustion chamber
-[Tp(1),n(:,1),species,flag(1)] = HGStp(species,n0,type,V0,P,options);
+global HGSdata; HGSload
+[id] = HGSid(species);
 
-% Nozzle
-if flag(1) == 1
-    [Tp(2),n(:,2),~,param(1),param(2),flag(2)] = HGSisentropic(species,n0,T0,P0,P1,options);
-else
-    return
+% Rebuild mixtures
+if max(id) >= length(HGSdata.Mm)
+   [species,n0] = HGSrebuild(species,n0);
+   [id] = HGSid(species);
 end
 
-% Parameters
-[MM] = HGSprop(species,n,[],[],'Mm');
-m = MM*sum(n);
-param(3) = m*param(1)-A*(P1-Pa);
-g0 = 9.807; % [m/s^2]
-param(4) = param(1)/g0;
+if ~exist('options1','var')
+    options1 = [];
+end
+if ~exist('options2','var')
+    options2 = [];
+end
+
+
+% Combustion chamber
+[Tp(1),n(1,:),species,flag(1)] = HGStp(id,n0,typevec{1},V0,Pvec(1),options1);
+
+if flag(1)~=1
+   return 
+end
+
+% Nozzle
+[Tp(2),n(2,:),~,param(1),param(2),param(3),flag(2)] = HGSnozzle(id,n(1,:),Tp(1),Pvec(1),Pvec(2),Pvec(3),A,typevec{2},options1,options2);
 
 end

@@ -95,6 +95,8 @@ elseif strcmpi(typeexit,'M')
     end
     if ~exist('options2','var') || isempty(options2)
         options2 = struct('xmin',0.1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
+    else
+        options2 = UpdateOpt(options2);
     end
     [V2,n,flag] = HGSsecant(@hastobeM,n0,options2);
     if flag~=1
@@ -120,5 +122,22 @@ end
         M1 = v2/a;
         zeroM = V1 - M1;
     end
+    
+    function opt = UpdateOpt(options)
+        opt.xmin = 0.1;
+        opt.xmax = P0;
+        opt.maxiter = 50;
+        opt.epsx = 0.01;
+        opt.epsy = 0.001;
+        opt.fchange = 50;
+        opt.info = 1;
 
+        if ~isempty(options)
+            fields = fieldnames(options);
+            for ii = 1:length(fields)
+                opt.(fields{ii}) = options.(fields{ii});
+            end
+        end
+
+    end
 end
