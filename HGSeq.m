@@ -11,11 +11,11 @@ function [species,n,Gmin] = HGSeq(species,n0,T,P,options)
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or numbers of species
+% species --> String or code of species
 % n0 --> [mol] Initial mixture
-% T --> [K] Temperature. Could be a single value or an array.
+% T --> [K] Temperature.
 % P --> [bar] Pressure
-% options --> Options for the fmincon
+% options --> Options for fmincon (OPTIONAL)
 %
 % Outputs:
 %--------------------------------------------------------------------------

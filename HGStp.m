@@ -11,14 +11,15 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or numbers of species
+% species --> String or code of species 
 % n0 --> [mols] Number of mols of each species
+%        usually, the number of mol of the products will be zero
 % type --> Entry type that defines the state of the input. 
 %          It can be 'T' or 'H'
-% V0 --> Entry that should be for type:'T'   V0=T [K] input temperature
-%                                      'H'   V0=H [kJ] input enthalpy
+% V0 --> Value of type:'T'   V0=T [K] input temperature
+%                      'H'   V0=H [kJ] input enthalpy
 % P --> [bar] Pressure
-% options --> Structure with the options for the secant method. 
+% options --> (OPTIONAL) Structure with the options for the secant method. 
 %                 .xmin [K] Temperature minimum for the solver;
 %                 .xmax [K] Temperature maximum for the solver;
 %                 .maxiter Max iterations for the solver;
@@ -31,13 +32,14 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           For instance, by default:
+%           options=struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 % Outputs: 
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
 % n --> [mols] Species resultant mols
-% species --> String or numbers of species
+% species --> String or code of species
 % flag --> Solver error detection: 
 %                 1  Solver has reached the solution
 %                -1  Solver failed. Maximum iterations
