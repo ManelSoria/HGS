@@ -62,17 +62,26 @@ if ~exist('options1','var')
     options1 = [];
 end
 if ~exist('options2','var')
-    options2 = struct('xmin',P1,'xmax',5/6*P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
+    options2 = struct('xmin',P1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
 end
+
+[mm] = HGSprop(species,n0,T0,P0,'Mm');
+m=sum(n0)*mm*1e-3;
 
 if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Frozen')
     [Tp,np,species,M,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,'P',P1,options1);
 elseif strcmp(Fro_Shift,'Combinated')
-    [~,nt,species,~,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,'M',1,options1,options2);
+    [Tt,nt,species,Pt,flag] = HGSisentropic(species,n0,T0,P0,'Shifting','M',1,options1,options2);
     if flag ~=1
        return 
     end
-    [Tp,np,species,M,flag] = HGSisentropic(species,nt,T0,P0,Fro_Shift,'P',P1,options1);
+    [v2,H2] = HGSprop(species,nt,Tt,Pt,'a','H');
+    H1 = H2 +(m/2000)*v2^2;
+    [TinitF,~,~,flag]=HGSeqcond(species,nt,'H',H1,P0,'Frozen',options1);
+    if flag ~=1
+       return 
+    end
+    [Tp,np,species,M,flag] = HGSisentropic(species,nt,TinitF,P0,'Frozen','P',P1,options1);
 else
     error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
 end
@@ -80,9 +89,8 @@ if flag ~=1
    return 
 end
 
-[MM,a] = HGSprop(species,np,Tp,P1,'Mm','a');
+[a] = HGSprop(species,np,Tp,P1,'a');
 v2=M*a;
-m = MM*sum(n);
 F = m*v2-A*(P1-Pa);
 g0 = 9.807;
 Isp = v2/g0;

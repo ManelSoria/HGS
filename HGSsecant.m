@@ -49,7 +49,7 @@ def.xmax = 4000;
 def.maxiter = 200;
 def.epsx = 5;
 def.epsy = 1;
-def.fchange = 500;
+def.fchange = 50;
 def.info = 0;
 def.dTp = 100;
 def.maxrange = 1500;
@@ -106,10 +106,10 @@ if x2-x1 > maxrange  % Try to fit to a parabola and solve the eq.
    
    % Don't allow the current range to extend the range specified
    if x1p < x1
-      x1p = options.xmin;
+      x1p = x1;
    end
    if x2p > x2
-      x2p = options.xmax;
+      x2p = x2;
    end
    
    [y1p,n1] = f(x1p,n0); 

@@ -32,7 +32,7 @@ function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,
+%           struct('xmin',300,'xmax',4000,'maxiter',50,'epsx',0.1,'epsy',0.5,
 %                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
 % options2 --> Structure with the options as options1 but for Pressure
 %           struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
@@ -64,7 +64,7 @@ global HGSdata; HGSload
 [id] = HGSid(species);
 
 if ~exist('options1','var')
-   options1 = []; 
+   options1 = struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,'info',0,'dTp',100); 
 end
 
 % Rebuild mixtures
@@ -90,15 +90,20 @@ if strcmpi(typeexit,'P')
 
     V2=v2/a2;
 elseif strcmpi(typeexit,'M')
+    if strcmpi('Frozen',Fro_Shift)
+        P0=P0*0.9; 
+    end
     if ~exist('options2','var') || isempty(options2)
-        options2 = struct('xmin',0.001,'xmax',5/6*P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
+        options2 = struct('xmin',0.1,'xmax',P0,'maxiter',50,'epsx',0.01,'epsy',0.001,'fchange',1,'info',0);
     end
     [V2,n,flag] = HGSsecant(@hastobeM,n0,options2);
-   if flag~=1
-       Tp=[];n=[];V2=[];flag = flag-2;
-       return
-   end
-   [Tp,n,~,flag]=HGSeqcond(id,n,'S',S,V2,Fro_Shift,options1);
+    if flag~=1
+        Tp=[];n=[];V2=[];flag = flag-2;
+        return
+    end    
+    [Tp,n,~,flag]=HGSeqcond(id,n,'S',S,V2,Fro_Shift,options1);
+else
+    error('Typeexit is not accepted by')
 end
 
     function [zeroM,n] = hastobeM(Pstar,n)
@@ -109,11 +114,11 @@ end
             S1 = HGSprop(species,n,Tstar,Pstar,'S'); 
             zeroS = (S1 - S);   
         end          
-        [Tstar,n] = HGSsecant(@hastobeS,n);
+        [Tstar,n] = HGSsecant(@hastobeS,n,options1);
         [a,H2] = HGSprop(species,n,Tstar,Pstar,'a','H');   
         v2=sqrt(2*1000*(h1-H2/m));
-        zeroM = V1 - v2/a;
+        M1 = v2/a;
+        zeroM = V1 - M1;
     end
-
 
 end
