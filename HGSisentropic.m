@@ -11,7 +11,7 @@ function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or numbers of species
+% species --> String or code of species
 % n0 --> [mols] Number of mols of each species
 % T0 --> [K] Initial temperature
 % P0 --> [bar] Inlet pressure
@@ -43,8 +43,8 @@ function [Tp,n,species,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 % Outputs:
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
-% n --> [mols] Species resultant mols
-% species --> String or numbers of species
+% n --> [mols] Species c mols
+% species --> String or code of species
 % V2 --> If typeexit 'P' ->[Mach] Mach of the mixture at a P
 %        If typeexit 'M' ->[bar] Pressure at the Mach
 % flag --> Solver error detection: 
