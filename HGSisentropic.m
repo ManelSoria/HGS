@@ -43,8 +43,8 @@ function [Tp,species,n,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 % Outputs:
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
-% n --> [mols] Species c mols
 % species --> String or code of species
+% n --> [mols] Species c mols
 % V2 --> If typeexit 'P' ->[Mach] Mach of the mixture at a P
 %        If typeexit 'M' ->[bar] Pressure at the Mach
 % flag --> Solver error detection: 
