@@ -21,7 +21,8 @@ function [Tp,species,n,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 %               It can be 'P' or 'M'
 % V1 --> Value for type:'P'   V1=P [bar] output pressure
 %                       'M'   V1=M [] output Mach. Has to be >=1
-% options1 --> Structure with the options for the secant method. 
+% options1 --> (optional) Structure with the options to be passed to HGSeqcond 
+%                  that solves for the temperature with HGSsecant. 
 %                 .xmin [K] Temperature minimum for the solver;
 %                 .xmax [K] Temperature maximum for the solver;
 %                 .maxiter Max iterations for the solver;
@@ -35,8 +36,9 @@ function [Tp,species,n,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 %                 parabola. +- dTp
 %           struct('xmin',300,'xmax',4000,'maxiter',50,'epsx',0.1,'epsy',0.5,
 %                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
-% options2 --> Structure with the options as options1 but for Pressure
-%           struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
+% options2 --> (optional) Structure with the options for HGSsecant to be 
+%              called here to solve for the Pressure
+%              struct('xmin',0.01,'xmax',<P0,'maxiter',50,'epsx',0.01,'epsy',0.01,
 %                   'fchange',1,'info',0)
 %
 %**************************************************************************

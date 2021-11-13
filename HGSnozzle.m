@@ -12,7 +12,7 @@ function [Tp,species,np,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_S
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or numbers of species
+% species --> String or code of species
 % n0 --> [mols] Number of mols of each species
 % T0 --> [K] Initial temperature
 % P0 --> [bar] Inlet pressure
@@ -46,10 +46,10 @@ function [Tp,species,np,M,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,Pa,A,Fro_S
 %--------------------------------------------------------------------------
 % Tp --> [K] Exit temperature
 % np --> [mols] Species resultant mols
-% species --> String or numbers of species
+% species --> String or code of species
 % M --> [] Exit Mach
 % F --> [N] Thrust
-% Isp --> [s^-1]Specific impulse, g0 = 9.807 m/s^2
+% Isp --> [s^]Specific impulse, g0 = 9.807 m/s^2
 % flag --> Solver error detection: 
 %                 1  Solver has reached the solution
 %                -1  Solver failed. Maximum iterations

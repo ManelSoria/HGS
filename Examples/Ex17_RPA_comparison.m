@@ -59,7 +59,7 @@ Hin = H_H2_HGS - deltaH_H2 + H_O2_HGS - deltaH_O2;
 [Tcomb,~, ncomb] = HGStp(species,n,'H', Hin, Pin);
 
 % Now, we run the isentropic expansion
-[Tis,~,nis,v2,M2] = HGSisentropic(species,ncomb,Tcomb,Pin,'Shifting','P',Pexit);
+[Tis,~,nis,M2,flag] = HGSisentropic(species,ncomb,Tcomb,Pin,'Shifting','P',Pexit);
 
 
 % Comparing results
