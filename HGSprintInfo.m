@@ -32,7 +32,7 @@ function HGSprintInfo(species)
     
     ns = length(HGSdata.Mm);
     if  ns >= id
-        fprintf('Species = <%s>   code = %d\n',HGSdata.name{id},id);
+        fprintf('Species = %s,   state = %s,  <code = %d>\n',HGSdata.name{id},HGSdata.state{id},id);
         ena=HGSdata.ena{id}; % element names
         nat=HGSdata.nat{id};
         ne=numel(ena); % number of elements 
