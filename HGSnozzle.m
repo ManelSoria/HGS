@@ -146,6 +146,6 @@ g0 = 9.807;
 Isp = v2/g0;
 
 throat = {nt, Tt, Pt, At};
-exit = {ne, Te, Me, Ae};
+exit = {ne, Te, Me, Ae, F, Isp};
 
 end
