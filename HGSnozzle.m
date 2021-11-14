@@ -129,7 +129,7 @@ end
 % Ideal Gas law
 rho = Pt/(Rg*Tt);
 % Continuity
-At = sum(n)/(Mm*a*rho);
+At = sum(nt)/(Mm*a*rho);
 
 
 % Other properties of the nozzle exit
@@ -138,10 +138,10 @@ v2=Me*a;
 % Ideal Gas law
 rho = Pt/(Rg*Tt);
 % Continuity
-Ae = sum(n)/(Mm*v2*rho);
+Ae = sum(ne)/(Mm*v2*rho);
 
 % Properties
-F = m*v2-A*(P1-Pa);
+F = m*v2-Ae*(Pe-Pa);
 g0 = 9.807;
 Isp = v2/g0;
 
