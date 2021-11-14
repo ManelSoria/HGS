@@ -17,7 +17,7 @@ function HGSprintInfo(species)
 % Command Window Print
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
@@ -46,7 +46,7 @@ function HGSprintInfo(species)
         
     else
         id2 = id-ns;
-        fprintf('Combination = <%s>   code = %d\n',HGSdata.comb{id2},id);
+        fprintf('Combination = <%s>   <code = %d>\n',HGSdata.comb{id2},id);
         cen=HGSdata.cspec{id2}; % combination element names
         cna=HGSdata.cper{id2}; % combination element atoms
         ne=numel(cna); % number of elements 

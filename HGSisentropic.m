@@ -58,7 +58,7 @@ function [Tp,species,n,V2,flag] = HGSisentropic(species,n0,T0,P0,Fro_Shift,typee
 %                -4  Solver failed. Initial sign change not found in P loop
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
   

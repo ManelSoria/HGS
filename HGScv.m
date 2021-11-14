@@ -18,7 +18,7 @@ function [Cv] = HGScv(Cp)
 % Cv --> [kJ/(mol*K)] Constant volume coefficient
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

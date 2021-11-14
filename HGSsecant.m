@@ -38,7 +38,7 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                -2  Solver failed. Initial sign change not found
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

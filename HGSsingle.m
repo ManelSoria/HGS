@@ -19,14 +19,14 @@ function [Res] = HGSsingle(species,property,T,P)
 %--------------------------------------------------------------------------
 % Res --> Property result
 %           Mm [g/mol]
-%           Cp [kJ/(mol*K)]
-%           Cv [kJ/(mol*K)]
+%           cp [kJ/(mol*K)]
+%           cv [kJ/(mol*K)]
 %           h [kJ/mol]
 %           s [kJ/(mol*K)]
 %           g [kJ/mol]
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

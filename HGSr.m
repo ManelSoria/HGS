@@ -16,7 +16,7 @@ function HGSr
 % R is load in the global workspace
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC     
 

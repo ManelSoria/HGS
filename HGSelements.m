@@ -21,7 +21,7 @@ function [eln,elq] = HGSelements(name)
 % [a,b]=HGSelements('H2O');
 % [a,b]=HGSelements(2247);
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

@@ -5,21 +5,20 @@ function  HGSfind(name,complete)
 %
 %**************************************************************************
 %
-% HGSfind finds the species and the mixtures that contains the (name) in
-% his name.
+% HGSfind finds the species and the mixtures that contain the string name.
 %
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% name --> Name to find
-% complete --> Returns the complete name if complete = 1; No complete = 0.
+% name --> String to be found
+% complete --> Prints the complete name if complete = 1
 %
 % Outputs:
 %--------------------------------------------------------------------------
 % Command Window Print
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

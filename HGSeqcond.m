@@ -47,7 +47,7 @@ function [Tp,species,n,flag] = HGSeqcond(species,n0,type,V0,P,Fro_Shift,options)
 %                -2  Solver failed. Initial sign change not found
 %
 % *************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

@@ -19,7 +19,7 @@ function  HGSaddMixture(name,species,percent)
 % HGSdata update
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

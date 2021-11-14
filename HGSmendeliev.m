@@ -17,7 +17,7 @@ function [Mendeleiev] = HGSmendeliev
 % Mendeleiev --> [g/mol] Molar mass of each substance of the periodic table
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

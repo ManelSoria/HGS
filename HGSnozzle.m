@@ -65,7 +65,7 @@ function [species,throat,exit,flag] = HGSnozzle(species,n0,T0,P0,Pe,Pa,Fro_Shift
 %                -4  Solver failed. Initial sign change not found in P loop
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
