@@ -9,7 +9,6 @@
 
 function Ex08_adiabatic_flame_T
 
-clear; clc;
 
 species={'H2','O2','H2O','H','O','OH'};
 Tr=350;             % K 
@@ -20,13 +19,13 @@ Hin = HGSprop(species,nr,Tr,P,'H')
 
 
 % Plot products enthalpy vs. T
-T=linspace(300,5000,10);
+T=linspace(300,4000,20);
 Hout = zeros(length(T),1);
 for i=1:length(T) 
     [~,comp,~] = HGSeq(species,nr,T(i),P);
     Hout(i) =HGSprop(species,comp,T(i),P,'H');    
 end
-plot(T,Hout,'-or',T,Hin*ones(length(T),1),'-ob','LineWidth',2);
+plot(T,Hout,'-or',T,Hin*ones(length(T),1),'-b','LineWidth',2);
 legend('Hout','Hin'); 
 xlabel('Temperature (K)'); ylabel('Enthalpy (kJ/molK)');
 set(gca,'FontSize',18)

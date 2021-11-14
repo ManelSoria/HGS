@@ -11,6 +11,9 @@
 % Search it on the web for more info. https://www.rocket-propulsion.com/index.htm
 % We compare our HGS algorithms with their results for a LH2-LOX combustion
 
+% You can find a screen capture of the RPA solution in the file
+% RPA_H2_O2_ex.PNG
+
 % RPA data (ignore H2O2 and HO2 species)
 % Combustion data
 RPATcomb = 3004.0779; 
@@ -19,8 +22,6 @@ RPAcomb = [0.4730081, 0.0000519, 0.5040833, 0.0063140, 0.0001233, 0.0164185];
 RPATis = 1534.1342;
 RPAis = [0.4833980, 0, 0.4833980, 0.0000007, 0, 0.0000183];
 
-% If you want the screenshot because you are a grouse that don't trust me
-% type: winopen('RPA_H2_O2_ex.PNG') on Command Window
 
 % Basic info
 of_ratio = 4.1; % The OF Ratio is done with kg oxidizer/ kg fuel
@@ -63,15 +64,16 @@ Hin = H_H2_HGS - deltaH_H2 + H_O2_HGS - deltaH_O2;
 
 
 % Comparing results
-fprintf('Post combustion\n')
-fprintf('RPA - <%.3f>  HGS   - <%.3f> \n',RPATcomb,Tcomb)
+fprintf('After the combustion\n')
+fprintf('RPA\t %.3f K\t\t HGS: %.3f K \n',RPATcomb,Tcomb)
+fprintf('Molar fractions\n');
 for ii =1:length(species)
-    fprintf('%s - <%.3e> - <%.3e> \n',species{ii},ncomb(ii)/sum(ncomb),RPAcomb(ii))
+    fprintf('%s\t RPA:%.3e \t\t HGS: %.3e \n',species{ii},ncomb(ii)/sum(ncomb),RPAcomb(ii))
 end
 
 fprintf('\n')
-fprintf('Post expansion\n')
-fprintf('RPA - <%.3f>  HGS   - <%.3f> \n',RPATis,Tis)
+fprintf('After the expansion\n')
+fprintf('RPA\t %.3f K\t\t HGS: %.3f K \n',RPATis,Tis)
 for ii =1:length(species)
-    fprintf('%s - <%.3e> - <%.3e> \n',species{ii},nis(ii)/sum(nis),RPAis(ii))
+    fprintf('%s\t RPA:%.3e \t\t HGS: %.3e \n',species{ii},nis(ii)/sum(nis),RPAis(ii))    
 end

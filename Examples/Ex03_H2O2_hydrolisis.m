@@ -9,11 +9,10 @@
 % Inlet: H2O2
 % Outlet: H2O + (1/2)O2 at Tp
 
-clear; clc;
+clear; 
  
-R=8.314*1e-3;   % kJ/molK
 Tr=300;         % K
-p=1;            % not rellevant
+p=1;            % not relevant
  
 % Enthalpy of each species 
 hH2O2=@(T) HGSsingle('H2O2','h',T,p);
@@ -32,5 +31,5 @@ options=optimset(...
  
 [Tp,fval,exitflag]=fzero(eq,3000,options);
 
-fprintf('Dissociation temperature: %.2f K \n',Tp);
+fprintf('Temperature of the products: %.2f K \n',Tp);
 
