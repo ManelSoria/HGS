@@ -6,15 +6,15 @@ function [species,throat,exit,flag] = HGSnozzle(species,n0,T0,P0,Pe,Pa,Fro_Shift
 %
 %**************************************************************************
 % 
-% HGSnozzle calculates from the inlet nozzle conditions the thoat and exit 
-% conditions plus the thrust and Isp. 
-%
+% HGSnozzle calculates the throat and exit conditions from the inlet nozzle
+%  conditions
+%  
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or code of species
-% n0 --> [mols] Number of mols of each species
-% T0 --> [K] Initial temperature
+% species --> String or code of inlet species
+% n0 --> [mols] Number of mols/s of each inlet species
+% T0 --> [K] Inlet temperature
 % P0 --> [bar] Inlet pressure
 % Pe --> [bar] Exit pressure
 % Pa --> [bar] Atmospheric pressure
@@ -86,16 +86,23 @@ if ~exist('options2','var')
     options2 = [];
 end
 
+% Check input 
+if T0<800 || P0<10 
+    error('HGSnozzle T0=%e P0=%e too low inlet pressure or temperature',T0,P0);
+end
+
 % Total mass
-[mm] = HGSprop(id,n0,T0,P0,'Mm');
-m=sum(n0)*mm*1e-3;
+[mm] = HGSprop(id,n0,T0,P0,'Mm'); % g/mol
+m=sum(n0)*mm*1e-3; % kg/s
 
 
 % Throat calculation
 if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Combined')
     [Tt,~,nt,Pt,flag] = HGSisentropic(id,n0,T0,P0,'Shifting','M',1,options1,options2);
+    if flag ~=1, error('HGSnozzle failed to converge/1 flag=%d',flag), end        
 elseif  strcmp(Fro_Shift,'Frozen')
     [Tt,~,nt,Pt,flag] = HGSisentropic(id,n0,T0,P0,'Frozen','M',1,options1,options2);
+    if flag ~=1, error('HGSnozzle failed to converge/2 flag=%d',flag), end    
 else
     error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
 end
@@ -104,25 +111,20 @@ end
 if strcmp(Fro_Shift,'Shifting') || strcmp(Fro_Shift,'Frozen')
     % Shifting and Frozen doesnt require extra action
     [Te,~,ne,Me,flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',Pe,options1);   
+    if flag ~=1, error('HGSnozzle failed to converge/3 flag=%d',flag), end    
 else
-    if flag ~=1
-       return 
-    end
     % Going back until the nozzle start but with a frozen composition 
     [v2,H2] = HGSprop(id,nt,Tt,Pt,'a','H');
     H1 = H2 +(m/2000)*v2^2; % Enthalpy of the start v=0
     [TinitF,~,~,flag]=HGSeqcond(id,nt,'H',H1,P0,'Frozen',options1);
-    if flag ~=1
-       return 
-    end
+    if flag ~=1, error('HGSnozzle failed to converge/4 flag=%d',flag), end    
+
     % Frozen expansion
     [Te,~,ne,Me,flag] = HGSisentropic(id,nt,TinitF,P0,'Frozen','P',Pe,options1);
+    if flag ~=1, error('HGSnozzle failed to converge/5 flag=%d',flag), end    
 end
 
-% Flag error return
-if flag ~=1
-   return 
-end
+
 
 % Other properties of the nozzle throat
 [Rg,a,Mm] = HGSprop(id,nt,Tt,Pt,'Rg','a','Mm');
@@ -147,5 +149,8 @@ Isp = v2/g0;
 
 throat = {nt, Tt, Pt, At};
 exit = {ne, Te, Me, Ae, F, Isp};
+
+
+
 
 end

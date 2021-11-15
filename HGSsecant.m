@@ -68,21 +68,35 @@ maxiter = def.maxiter;
 epsx = def.epsx;
 epsy = def.epsy;
 fchange = def.fchange;
-info = def.info;
+info = 1; % def.info;
 dTp = def.dTp;
 maxrange = def.maxrange;
 
 %% Evaluation of Max and Min T
-
+if info
+    fprintf('HGSsecant begins\n');
+end
 [y1,n1] = f(x1,n0); 
-[y2,n2] = f(x2,n0); 
+[y2,n2] = f(x2,n0);
+
+if imag(y1)~=0 || imag(y2)~=0
+    error('HGSsecant found imaginary numbers in initial range y1=(%e,%e) y2=(%e,%e)\n',...
+       real(y1),imag(y1),real(y2),imag(y2) );
+end
+
+if info
+    fprintf('HGSsecant found x1=%e y1=%e x2=%e y2=%e\n',x1,y1,x2,y2);
+end
 
 Tp=[];
 n=[];
 
 if y1*y2 > 0 % No sign change, sorry !
     flag=-2; % Initial sign change not found
-    return
+    if info
+        plotforerror(x1,x2,15);
+    end
+    error('HGSsecant failed to find initial sign change; set info=1 to see plot\n');
 end
 
 if x2-x1 > maxrange  % Try to fit to a parabola and solve the eq.
@@ -171,5 +185,14 @@ for ii=1:maxiter
     
 end
 
+    function plotforerror(x1,x2,n)
+        xv=linspace(x1,x2,n);
+        for i=1:numel(xv)
+            yv(i)=f(xv(i),n0);
+        end
+        figure
+        plot(xv,yv,'o-');
+        title('HGSsecant failed to solve this function');
+    end
 end
 

@@ -67,7 +67,7 @@ global HGSdata; HGSload
 [id] = HGSid(species);
 
 if ~exist('options1','var')
-   options1 = struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,'info',0,'dTp',100); 
+   options1 = struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.001,'epsy',0.005,'fchange',5,'maxrange',1500,'info',0,'dTp',100); 
 end
 
 % Rebuild mixtures
@@ -124,13 +124,17 @@ end
             S1 = HGSprop(species,n,Tstar,Pstar,'S'); 
             zeroS = (S1 - S);   
         end          
-        [Tstar,n] = HGSsecant(@hastobeS,n,options1);
+        [Tstar,n,flags] = HGSsecant(@hastobeS,n,options1);
+        if flags~=1
+            error('uhhh error in hastobeM HGSsecant failed flag=%d \n',flags);
+        end
         [a,H2] = HGSprop(species,n,Tstar,Pstar,'a','H');   
         v2=sqrt(2*1000*(h1-H2/m));
         M1 = v2/a;
         zeroM = V1 - M1;
     end
     
+
     function opt = UpdateOpt(options)
         %Overwrite default options with the new ones
         opt.xmin = 0.1;
@@ -149,4 +153,5 @@ end
         end
 
     end
+
 end
