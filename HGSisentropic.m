@@ -67,7 +67,7 @@ global HGSdata; HGSload
 [id] = HGSid(species);
 
 if ~exist('options1','var')
-   options1 = struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.001,'epsy',0.005,'fchange',5,'maxrange',1500,'info',0,'dTp',100); 
+   options1 = struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',1,'epsy',10^(ceil(log10(max(n0)))-1)*1e-4,'fchange',25,'maxrange',1500,'info',0,'dTp',100); 
 end
 
 % Rebuild mixtures

@@ -28,15 +28,15 @@ hO2_inlet_HGS = hO2_ref_HGS - deltaH_O2; % kJ/mol
 
 
 species = {'H2', 'O2', 'H2O', 'OH', 'O', 'H'};
-n0 = [2.8,1.01,0,0,0,0];
+n0 = [2875.49603174603,1052.56578536159,0,0,0,0];
 Hin = n0(1)*hH2_inlet_HGS + n0(2)*hO2_inlet_HGS;
 P0=62;
 
 [Tp,~,np,~] = HGStp(species,n0,'H',Hin,P0);
 
 %% The expansion
-P = 60:-1:1;
-[species,n,T,v,M,A,F,Isp] = HGSnozzle(species,np,Tp,P0,P,Pa,'Shifting');
+P = [60:-2:1, linspace(1,0.01,20)];
+[species,n,T,v,M,A,F,Isp] = HGSnozzle(species,np,Tp,P0,P,Pa,'Frozen');
 
 %% Plots
 
