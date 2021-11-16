@@ -47,23 +47,19 @@ function  [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,P,Pa,Fro_Shift)
 m=sum(n0)*mm*1e-3; % kg/s
 g0 = 9.807;
 
-t = length(P);
 if ~strcmp(Fro_Shift,'Shifting') && ~strcmp(Fro_Shift,'Frozen')
     error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
 end
 
 for ii=1:length(P)
-    fprintf('P = %f,  %i /%i \n',P(ii),ii,t)
+    fprintf('P = %f,  %i /%i \n',P(ii),ii,length(P))
     [T(ii),~,n(:,ii),M(ii),flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',P(ii)); % K , mols, [],...
     if flag ~=1, error('HGSnozzle failed to converge/1 flag=%d',flag), end  
     [Rg,a(ii),Mm] = HGSprop(id,n(:,ii),T(ii),P(ii),'Rg','a','Mm'); % kJ/(kg*K), m/s, g/mol
-    rho = P(ii)*1e5/(Rg*1000*T(ii)); % kg/m^3
-    fprintf('Rg= %f, rho = %f\n',Rg,rho)
+    rho = P(ii)*1e5/(Rg*1000*T(ii)); % kg/m^3 Convert bar to Pa g 2 kG
     v(ii)=M(ii)*a(ii); %m/s
     A(ii) = m/(v(ii)*rho); % m^2
-    fprintf('r= %f, A= %f\n',sqrt(A(ii)/pi),A(ii))
-    F(ii) = m*v(ii)+A(ii)*(P(ii)-Pa)*1e5; 
-    fprintf('mv = %f, AP = %f\n',m*v(ii),A(ii)*(P(ii)-Pa)*1e5)
+    F(ii) = m*v(ii)+A(ii)*(P(ii)-Pa)*1e5; % Convert bar to Pa
     Isp(ii) = v(ii)/g0;
 end
 

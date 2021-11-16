@@ -12,7 +12,7 @@
 
 close all
 %% First of all, we need the combustion species :D.
-% Look on example 12 for more info about this.
+% Look on example 12 for more info about this. Vinci cycle
 
 hH2_INIST=INIST('H2','h_pt',77.5,223.824)*HGSsingle('H2','Mm')/1000; % kJ/mol
 hH2_ref_INIST=INIST('H2','h_pt',77.5,350) * HGSsingle('H2','Mm')/1000; % kJ/mol
@@ -35,8 +35,9 @@ P0=62;
 [Tp,~,np,~] = HGStp(species,n0,'H',Hin,P0);
 
 %% The expansion
-P = [60:-2:1, linspace(1,0.01,20)];
-[species,n,T,v,M,A,F,Isp] = HGSnozzle(species,np,Tp,P0,P,Pa,'Frozen');
+% bar 60 to 0.01 in 2 diferent linespace
+P = [P0-2:-2:1, linspace(1,0.01,20)]; 
+[species,n,T,v,M,A,F,Isp] = HGSnozzle(species,np,Tp,P0,P,Pa,'Shifting');
 
 %% Plots
 
@@ -99,7 +100,7 @@ ylabel('r [m]')
 
 figure(8)
 plot(P,Isp)
-title('Isp vs T')
+title('P vs Isp')
 set ( gca, 'xdir', 'reverse' )
 xlabel('P [bar]')
 ylabel('Isp []')
