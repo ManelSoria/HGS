@@ -68,7 +68,7 @@ maxiter = def.maxiter;
 epsx = def.epsx;
 epsy = def.epsy;
 fchange = def.fchange;
-info = 1; % def.info;
+info =  def.info;
 dTp = def.dTp;
 maxrange = def.maxrange;
 
