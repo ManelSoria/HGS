@@ -6,7 +6,7 @@
 %
 % Compute the ISP of H2, O2 mixture vs OF ratio (LIQUID FUEL)
 
-function Ex11_Isp_vs_OF_ratio
+function Ex10_Isp_vs_OF_ratio
 
 close all;
 
