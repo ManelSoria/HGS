@@ -11,96 +11,94 @@
 % Changing the for of the P vector by a solver is what HGSnozzle does.
 
 close all
-%% First of all, we need the combustion species :D.
-% Look on example 12 for more info about this. Vinci cycle
+clear
 
-hH2_INIST=INIST('H2','h_pt',77.5,223.824)*HGSsingle('H2','Mm')/1000; % kJ/mol
-hH2_ref_INIST=INIST('H2','h_pt',77.5,350) * HGSsingle('H2','Mm')/1000; % kJ/mol
-deltaH_H2=hH2_ref_INIST - hH2_INIST; 
-hH2_ref_HGS=HGSsingle('H2','h',350,77.5);
-hH2_inlet_HGS = hH2_ref_HGS - deltaH_H2; % kJ/mol
-
-hO2_INIST=INIST('O2','h_pt',77.5,94.518)*HGSsingle('O2','Mm')/1000; % kJ/mol
-hO2_ref_INIST=INIST('O2','h_pt',77.5,350) * HGSsingle('O2','Mm')/1000; % kJ/mol
-deltaH_O2=hO2_ref_INIST - hO2_INIST; 
-hO2_ref_HGS=HGSsingle('H2','h',350,77.5);
-hO2_inlet_HGS = hO2_ref_HGS - deltaH_O2; % kJ/mol
-
-
-species = {'H2', 'O2', 'H2O', 'OH', 'O', 'H'};
-n0 = [2875.49603174603,1052.56578536159,0,0,0,0];
-Hin = n0(1)*hH2_inlet_HGS + n0(2)*hO2_inlet_HGS;
+% The inlet conditions to combustion chamber of the Vinci engine are:
+species={'H2','O2','H2O','OH','O','H'};
+n0 = [2875.496,1052.566,0,0,0,0]; % mol/s (obtained from kg/s)
 P0=62;
+Pa=0; % Vacuum
+Hin=-19.0609; % kJ (liquid inlet, obtained with INIST)
 
 [Tp,~,np,~] = HGStp(species,n0,'H',Hin,P0);
 
-%% The expansion
-% bar 60 to 0.01 in 2 diferent linespace
-P = [P0-2:-2:1, linspace(1,0.01,20)]; 
+%% Nozzle expansion
+% We generate a vector with the pressure points to be obtained
+% From 10 bar below the chamber pressure to 0.01 in 2 diferent steps
+% 10 bar is arbitrary, we just want to make sure that we begin before the
+% throat but far from the inlet, where the velocity would be 0 and the area
+% infinite.
+P = [P0-10:-2:1, linspace(1,0.01,20)]; 
 [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,np,Tp,P0,P,Pa,'Shifting');
 
-%% Plots
+% Plots
 
-figure(1)
-plot(P,T)
-set ( gca, 'xdir', 'reverse' )
-title('P vs T')
+figure
+plot(P,T, '-b','LineWidth',2)
+set ( gca, 'xdir', 'reverse')
+title('T versus P')
 xlabel('P [bar]')
 ylabel('T [K]')
+set(gca,'FontSize',18)
 
-% figure(2)
-% hold on
-% plot(P,n(1,:)./sum(n(:,1))*100)
-% plot(P,n(2,:)./sum(n(:,2))*100)
-% plot(P,n(3,:)./sum(n(:,3))*100)
-% plot(P,n(4,:)./sum(n(:,4))*100)
-% plot(P,n(5,:)./sum(n(:,5))*100)
-% plot(P,n(6,:)./sum(n(:,6))*100)
-% set ( gca, 'xdir', 'reverse' )
-% title('P vs mols')
-% xlabel('P [bar]')
-% ylabel('% []')
-% legend(species)
-
-
-figure(3)
-plot(P,M)
-title('Mach vs T')
+%%
+figure
+hold on
+plot(P,n(3,:)./sum(n(:,3)),'LineWidth',2)
 set ( gca, 'xdir', 'reverse' )
+title('H2O fraction versus P')
 xlabel('P [bar]')
-ylabel('Mach []')
-
-figure(4)
-plot(P,v)
-title('v vs T')
+ylabel('H2O Molar fraction []')
+set(gca,'FontSize',18)
+%%
+figure
+plot(P,v,'LineWidth',2)
+title('v vs P')
 set ( gca, 'xdir', 'reverse' )
 xlabel('P [bar]')
 ylabel('v [m/s]')
+set(gca,'FontSize',18)
+%%
+figure
+plot(P,M,'LineWidth',2)
+hold on
+plot(P,ones(size(P)),'r')
+title('Mach vs P')
+set ( gca, 'xdir', 'reverse' )
+xlabel('P [bar]')
+ylabel('Mach []')
+set(gca,'FontSize',18)
 
-figure(5)
-plot(P,F)
-title('F vs T')
+%%
+% We can find the exact throat pressure with:
+[~,~,~,Pt,flag] = HGSisentropic(species,np,Tp,P0,'Shifting','M',1);
+plot([Pt Pt],[0 6],'r')
+
+
+%%
+figure
+plot(P,F,'LineWidth',2)
+title('Thrust vs P')
 set ( gca, 'xdir', 'reverse' )
 xlabel('P [bar]')
 ylabel('F [N]')
+set(gca,'FontSize',18)
 
-figure(6)
-plot(P,A)
+%%
+figure
+D=1000*2*sqrt(A/pi);
+semilogy(P,D,'LineWidth',2)
+hold on
+semilogy([Pt Pt],[min(D)/2 max(D)],'r')
 set ( gca, 'xdir', 'reverse' )
-title('P vs A')
+title('Diameter vs P')
 xlabel('P [bar]')
-ylabel('A [m^2]')
+ylabel('Diameter [mm]')
+set(gca,'FontSize',18)
 
-figure(7)
-plot(P,sqrt(A/pi))
-title('r vs T')
-set ( gca, 'xdir', 'reverse' )
-xlabel('P [bar]')
-ylabel('r [m]')
+Dt=interp1(P0-P,D,P0-Pt); % P0-P to have x values in ascending order
+De=D(end);
 
-figure(8)
-plot(P,Isp)
-title('P vs Isp')
-set ( gca, 'xdir', 'reverse' )
-xlabel('P [bar]')
-ylabel('Isp []')
+fprintf('Throat diameter %.2f mm\nExit diameter %.2f mm \n',Dt,De);
+fprintf('Nozzle expansion ratio = %.2f \n',(De/Dt)^2);
+fprintf('Thrust = %.2f kN\n',F(end)/1000);

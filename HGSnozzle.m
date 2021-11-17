@@ -1,13 +1,14 @@
 function  [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,P,Pa,Fro_Shift)
 %**************************************************************************
 %
-% [species,throat,exit,flag] = HGSnozzle(species,n0,T0,P0,Pe,Pa,Fro_Shift,
-%                                           options1,options2)
+% [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,Pe,Pa,Fro_Shift,
+%                             options1,options2)
 %
 %**************************************************************************
 % 
-% HGSnozzle calculates the throat and exit conditions from the inlet nozzle
-%  conditions
+% HGSnozzle evaluates different flow properties as a function of the
+% pressure, during a isentropic expansion beginning with a very low
+% velocity
 %  
 %**************************************************************************
 % Inputs:
@@ -16,7 +17,8 @@ function  [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,P,Pa,Fro_Shift)
 % n0 --> [mols] Number of mols/s of each inlet species
 % T0 --> [K] Inlet temperature
 % P0 --> [bar] Inlet pressure
-% P --> [bar] Pressure vector
+% P -->  [bar] Pressure vector (with all the pressures that have to be
+%         evaluated)
 % Pa --> [bar] Atmospheric pressure
 % Fro_Shift --> Select between: 'Frozen' for frozen flow
 %                               'Shifting' for shifting flow
@@ -24,16 +26,12 @@ function  [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,P,Pa,Fro_Shift)
 % Outputs:
 %--------------------------------------------------------------------------
 % species --> String or code of species
-% n --> [mols] Species mols in exit
+% n --> [mols] Matrix of pecies mols, sorted as: n(species, pressure)
 % T --> [K] Exit temperature
 % M --> [] Exit Mch
 % A --> [m^2] Exit area
 % F --> [N] Thrust
 % Isp --> [s^]Specific impulse, g0 = 9.807 m/s^2
-% flag --> Solver error detection: 
-%                 1  Solver has reached the solution
-%                -1  Solver failed. Maximum iterations
-%                -2  Solver failed. Initial sign change not found
 %
 %**************************************************************************
 % *HGS 2.1
