@@ -52,7 +52,7 @@ function [Tp,species,n,flag] = HGStp(species,n0,type,V0,P,options)
 % HGStp({'H2','O2','H2O','H','O','OH'}, [2 1 0 0 0 0] , 'H', 3.1, 10)
 %**************************************************************************
 % *HGS 2.1
-% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *By Caleb Fuster, Manel Soria and Arnau MirÃ³
 % *ESEIAAT UPC    
 
 % type = 'H' or 'T'
