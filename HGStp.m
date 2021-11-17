@@ -1,7 +1,7 @@
-function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
+function [Tp,species,n,flag] = HGStp(species,n0,type,V0,P,options)
 %**************************************************************************
 %
-% [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
+% [Tp,species,n,flag] = HGStp(species,n0,type,V0,P,options)
 %
 %**************************************************************************
 % 
@@ -30,10 +30,11 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 %                 .type Select between: 'Frozen' for frozen flow
 %                                       'Shifting' for shifting flow
 %                 .info Detailed info == 1; No info == 0.
+%                 .maxrange Max range to fit in a parabola
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
 %           For instance, by default:
-%           options=struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           options=struct('xmin',300,'xmax',5000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'dTp',100)
 %
 % Outputs: 
 %--------------------------------------------------------------------------
@@ -50,8 +51,8 @@ function [Tp,n,species,flag] = HGStp(species,n0,type,V0,P,options)
 % HGStp({'H2','O2','H2O','H','O','OH'}, [2 1 0 0 0 0] , 'T', 400, 10)
 % HGStp({'H2','O2','H2O','H','O','OH'}, [2 1 0 0 0 0] , 'H', 3.1, 10)
 %**************************************************************************
-% *HGS 2.0
-% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *HGS 2.1
+% *By Caleb Fuster, Manel Soria and Arnau MirÃ³
 % *ESEIAAT UPC    
 
 % type = 'H' or 'T'
@@ -79,6 +80,6 @@ else
     H = V0;
 end
 
-[Tp,n,~,flag]=HGSeqcond(id,n0,'H',H,P,options);
+[Tp,~,n,flag]=HGSeqcond(id,n0,'H',H,P,'Shifting',options);
 
 end

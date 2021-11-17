@@ -20,7 +20,7 @@ function [G] = HGSg(S,H,T)
 % G --> [kJ/mol] Free Gibbs energy
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

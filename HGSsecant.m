@@ -21,13 +21,12 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                 .epsy Diferential S where the solver reachs the solution;
 %                 .fchange T difference where secant method is
 %                          changed by bisection method;
-%                 .type Select between: 'Frozen' for frozen flow
-%                                       'Shifting' for shifting flow
+%                 .maxrange Max range to fit in a parabola
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
 %           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',
-%                   1,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%                   1,'fchange',5,'info',0,'dTp',100,'maxrange',1500)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -39,7 +38,7 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                -2  Solver failed. Initial sign change not found
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
@@ -50,9 +49,10 @@ def.xmax = 4000;
 def.maxiter = 200;
 def.epsx = 5;
 def.epsy = 1;
-def.fchange = 500;
+def.fchange = 50;
 def.info = 0;
 def.dTp = 100;
+def.maxrange = 1500;
 
 if exist('options','var') && ~isempty(options)
     fields = fieldnames(options);
@@ -68,23 +68,38 @@ maxiter = def.maxiter;
 epsx = def.epsx;
 epsy = def.epsy;
 fchange = def.fchange;
-info = def.info;
+info =  def.info;
 dTp = def.dTp;
+maxrange = def.maxrange;
 
 %% Evaluation of Max and Min T
-
+if info
+    fprintf('HGSsecant begins\n');
+end
 [y1,n1] = f(x1,n0); 
-[y2,n2] = f(x2,n0); 
+[y2,n2] = f(x2,n0);
+
+if imag(y1)~=0 || imag(y2)~=0
+    error('HGSsecant found imaginary numbers in initial range y1=(%e,%e) y2=(%e,%e)\n',...
+       real(y1),imag(y1),real(y2),imag(y2) );
+end
+
+if info
+    fprintf('HGSsecant found x1=%e y1=%e x2=%e y2=%e\n',x1,y1,x2,y2);
+end
 
 Tp=[];
 n=[];
 
 if y1*y2 > 0 % No sign change, sorry !
     flag=-2; % Initial sign change not found
-    return
+    if info
+        plotforerror(x1,x2,15);
+    end
+    error('HGSsecant failed to find initial sign change; set info=1 to see plot\n');
 end
 
-if x2-x1 > 1500  % Try to fit to a parabola and solve the eq.
+if x2-x1 > maxrange  % Try to fit to a parabola and solve the eq.
    x3 = (x2+x1)/2;
    [y3,~] = f(x3,n0); 
    a = (y1 -(y2-y3)/(x2-x3)*x1 - y3 + x3*(y2-y3)/(x2-x3)) / (x1^2 + (x1-x3)*(x3^2-x2^2)/(x2-x3) - x3^2);
@@ -104,11 +119,11 @@ if x2-x1 > 1500  % Try to fit to a parabola and solve the eq.
    end
    
    % Don't allow the current range to extend the range specified
-   if x1p < options.xmin
-      x1p = options.xmin;
+   if x1p < x1
+      x1p = x1;
    end
-   if x2p > options.xmax
-      x2p = options.xmax;
+   if x2p > x2
+      x2p = x2;
    end
    
    [y1p,n1] = f(x1p,n0); 
@@ -141,14 +156,15 @@ for ii=1:maxiter
     
     [yc,n]=f(xc,n); % Compute next value
     
+    
+    if info
+       fprintf('ii=%d x1=%e y1=%e xc=%e yc=%e x2=%e y2=%e \n',ii,x1,y1,xc,yc,x2,y2);
+    end
+    
     if abs(yc)<epsy || (abs(xc-x1)<epsx && abs(x2-xc)<epsx )% Stop if it is solved
         flag = 1;
         Tp=xc;
         break;
-    end
-    
-    if info
-       fprintf('ii=%d x1=%e y1=%e xc=%e yc=%e x2=%e y2=%e \n',ii,x1,y1,xc,yc,x2,y2);
     end
     
     if yc*y1>0 % Change limits
@@ -169,5 +185,14 @@ for ii=1:maxiter
     
 end
 
+    function plotforerror(x1,x2,n)
+        xv=linspace(x1,x2,n);
+        for i=1:numel(xv)
+            yv(i)=f(xv(i),n0);
+        end
+        figure
+        plot(xv,yv,'o-');
+        title('HGSsecant failed to solve this function');
+    end
 end
 

@@ -19,12 +19,12 @@ function [species,n,Gmin] = HGSeq(species,n0,T,P,options)
 %
 % Outputs:
 %--------------------------------------------------------------------------
-% species --> Species
+% species --> String or code of species
 % n --> [mol] Final mixture
 % Gmin --> [kJ] Minimum Gibbs free energy
 %
 % *************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

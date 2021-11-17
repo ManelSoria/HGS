@@ -1,7 +1,7 @@
-function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
+function [Tp,species,n,flag] = HGSeqcond(species,n0,type,V0,P,Fro_Shift,options)
 %**************************************************************************
 %
-% [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
+% [Tp,species,n,flag] = HGSeqcond(species,n0,type,V0,P,options)
 %
 %**************************************************************************
 % 
@@ -30,9 +30,11 @@ function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
 %                 .type Select between: 'Frozen' for frozen flow
 %                                       'Shifting' for shifting flow
 %                 .info Detailed info == 1; No info == 0.
+%                 .maxrange Max range to fit in a parabola
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',1,'fchange',5,'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
+%                   'type','Shifting','info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -45,7 +47,7 @@ function [Tp,n,species,flag] = HGSeqcond(species,n0,type,V0,P,options)
 %                -2  Solver failed. Initial sign change not found
 %
 % *************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
@@ -83,7 +85,9 @@ end
 
 options = def;
 
-
+if ~exist('Fro_Shift','var') || strcmpi(Fro_Shift,'')
+    Fro_Shift = 'Shifting';
+end
 
 %% Secant method resolution
 
@@ -91,7 +95,7 @@ options = def;
 
 
     function [H,n] = hastobezero(T,n)
-        if ~isfield(options,'type') || strcmpi(options.type,'Shifting')
+        if strcmpi(Fro_Shift,'Shifting')
             [~,n,~]=HGSeq(id,n,T,P,[]);
         end
         [H] = HGSprop(id,n,T,P,type)-V0;

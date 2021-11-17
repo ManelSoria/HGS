@@ -1,57 +1,65 @@
-function [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
+function  [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,P,Pa,Fro_Shift)
 %**************************************************************************
 %
-% [Tp,n,species,F,Isp,flag] = HGSnozzle(species,n0,T0,P0,P1,A,options)
+% [species,n,T,v,M,A,F,Isp] = HGSnozzle(species,n0,T0,P0,Pe,Pa,Fro_Shift,
+%                             options1,options2)
 %
 %**************************************************************************
 % 
-% HGSnozzle calculates from the inlet nozzle conditions the outlet 
-% conditions plus the thrust and Isp. 
-%
+% HGSnozzle evaluates different flow properties as a function of the
+% pressure, during a isentropic expansion beginning with a very low
+% velocity
+%  
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% species --> String or numbers of species
-% n0 --> [mols] Number of mols of each species
-% T0 --> [K] Initial temperature
+% species --> String or code of inlet species
+% n0 --> [mols] Number of mols/s of each inlet species
+% T0 --> [K] Inlet temperature
 % P0 --> [bar] Inlet pressure
-% P1 --> [bar] Exit pressure
-% A --> [m^2] Exit area
-% options --> Structure with the options for the secant method. 
-%                 .xmin [K] Temperature minimum for the solver;
-%                 .xmax [K] Temperature maximum for the solver;
-%                 .maxiter Max iterations for the solver;
-%                 .epsx Diferential T where the solver reachs the solution;
-%                 .epsy Diferential S where the solver reachs the solution;
-%                 .fchange T difference where secant method is
-%                          changed by bisection method;
-%                 .type Select between: 'Frozen' for frozen flow
-%                                       'Shifting' for shifting flow
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'type','Shifting','info',0,'')
+% P -->  [bar] Pressure vector (with all the pressures that have to be
+%         evaluated)
+% Pa --> [bar] Atmospheric pressure
+% Fro_Shift --> Select between: 'Frozen' for frozen flow
+%                               'Shifting' for shifting flow
 %
 % Outputs:
 %--------------------------------------------------------------------------
-% Tp --> [K] Exit temperature
-% n --> [mols] Species resultant mols
-% species --> String or numbers of species
+% species --> String or code of species
+% n --> [mols] Matrix of pecies mols, sorted as: n(species, pressure)
+% T --> [K] Exit temperature
+% M --> [] Exit Mch
+% A --> [m^2] Exit area
 % F --> [N] Thrust
-% Isp --> [s^-1]Specific impulse, g0 = 9.807 m/s^2
-% flag --> Solver error detection: 
-%                 1  Solver has reached the solution
-%                -1  Solver failed. Maximum iterations
-%                -2  Solver failed. Initial sign change not found
+% Isp --> [s^]Specific impulse, g0 = 9.807 m/s^2
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
-[Tp,n,species,v2,~,flag] = HGSisentropic(species,n0,T0,P0,P1,options);
-[MM] = HGSprop(species,n,[],[],'Mm');
-m = MM*sum(n);
-F = m*v2-A*(P1-Pa);
+[id] = HGSid(species);
+
+% Total mass
+[mm] = HGSprop(id,n0,T0,P0,'Mm'); % g/mol
+m=sum(n0)*mm*1e-3; % kg/s
 g0 = 9.807;
-Isp = v2/g0;
+
+if ~strcmp(Fro_Shift,'Shifting') && ~strcmp(Fro_Shift,'Frozen')
+    error('Your variable Fro_Shift is no one accepted by this function. Only Frozen and Shifting are accepted')
+end
+
+for ii=1:length(P)
+    fprintf('P = %f,  %i /%i \n',P(ii),ii,length(P))
+    [T(ii),~,n(:,ii),M(ii),flag] = HGSisentropic(id,n0,T0,P0,Fro_Shift,'P',P(ii)); % K , mols, [],...
+    if flag ~=1, error('HGSnozzle failed to converge/1 flag=%d',flag), end  
+    [Rg,a(ii),Mm] = HGSprop(id,n(:,ii),T(ii),P(ii),'Rg','a','Mm'); % kJ/(kg*K), m/s, g/mol
+    rho = P(ii)*1e5/(Rg*1000*T(ii)); % kg/m^3 Convert bar to Pa g 2 kG
+    v(ii)=M(ii)*a(ii); %m/s
+    A(ii) = m/(v(ii)*rho); % m^2
+    F(ii) = m*v(ii)+A(ii)*(P(ii)-Pa)*1e5; % Convert bar to Pa
+    Isp(ii) = v(ii)/g0;
+end
 
 
 end

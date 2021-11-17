@@ -1,5 +1,24 @@
-% HGSdataRebuild regenerates all the data abd. This is the function to call if
-% you suspect problems with your data base file.
+%**************************************************************************
+%
+% HGSdataRebuild
+%
+%**************************************************************************
+% 
+% HGSdataRebuild regenerates all the data abd. This is the function to call
+% if you suspect problems with your data base file.
+%
+%**************************************************************************
+% Inputs:
+%--------------------------------------------------------------------------
+%
+% Outputs:
+%--------------------------------------------------------------------------
+% HGSdata is regenerated
+%
+%**************************************************************************
+% *HGS 2.1
+% *By Caleb Fuster, Manel Soria and Arnau Miró
+% *ESEIAAT UPC 
 
 clear all;
 

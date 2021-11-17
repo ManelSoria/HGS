@@ -23,7 +23,7 @@ function [A,b,Aeq,beq,lb,ub] = HGSparamFmincon(id,n0)
 % ub --> fmincon ub upper boundary limit
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 

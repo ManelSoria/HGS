@@ -19,7 +19,7 @@ function [Cp] = HGScp(a,T)
 % Cp --> [kJ/(mol*K)] Constant pressure coeficient
 %
 %**************************************************************************
-% *HGS 2.0
+% *HGS 2.1
 % *By Caleb Fuster, Manel Soria and Arnau Miró
 % *ESEIAAT UPC    
 
