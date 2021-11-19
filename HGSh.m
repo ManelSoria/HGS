@@ -1,12 +1,12 @@
-function [H] = HGSh(a,T)
+function [h] = HGSh(a,T)
 %**************************************************************************
 %
-% [H] = HGSh(a,T)
+% [h] = HGSh(a,T)
 %
 %**************************************************************************
 % 
-% HGSh calculates the enthalpy of a species using his Burcat coeficients and
-% temperature
+% HGSh calculates the enthalpy of a species using his Burcat coeficients
+% and temperature
 %
 %**************************************************************************
 % Inputs:
@@ -16,7 +16,7 @@ function [H] = HGSh(a,T)
 %
 % Outputs:
 %--------------------------------------------------------------------------
-% H --> [kJ/mol] Enthalpy
+% h --> [kJ/mol] Enthalpy
 %
 %**************************************************************************
 % *HGS 2.1
@@ -25,6 +25,6 @@ function [H] = HGSh(a,T)
 
 global R; HGSr
 
-H = R * (a(6) + sum(a(1:5).*(T.^(1:5))./(1:5))); % [kJ/mol]
+h = R * (a(6) + sum(a(1:5).*(T.^(1:5))./(1:5))); % [kJ/mol]
 
 end

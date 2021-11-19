@@ -1,7 +1,7 @@
-function [Cv] = HGScv(Cp)
+function [cv] = HGScv(cp)
 %**************************************************************************
 %
-% [Cv] = HGScv(Cp)
+% [cv] = HGScv(cp)
 %
 %**************************************************************************
 %
@@ -11,11 +11,11 @@ function [Cv] = HGScv(Cp)
 %**************************************************************************
 % Inputs:
 %--------------------------------------------------------------------------
-% Cp --> [kJ/(mol*K)] Constant pressure coefficient
+% cp --> [kJ/(mol*K)] Constant pressure coefficient
 %
 % Outputs:
 %--------------------------------------------------------------------------
-% Cv --> [kJ/(mol*K)] Constant volume coefficient
+% cv --> [kJ/(mol*K)] Constant volume coefficient
 %
 %**************************************************************************
 % *HGS 2.1
@@ -24,6 +24,6 @@ function [Cv] = HGScv(Cp)
 
 global R
 
-Cv = Cp - R;  
+cv = cp - R;  
 
 end
