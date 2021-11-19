@@ -11,13 +11,11 @@ function HGSdataDownload(dbfname)
 % HGSdata structure is formed by:
 %               .name Contains all the species names
 %               .state Contains the state of the species
-%               .lim Contains de limits of the Burcat coeficients
+%               .lim Contains de limits of the Burcat coefficients
 %                       lim(ii,1) [K] Lowest temperature limit
 %                       lim(ii,2) [K] Temperature where it changes between
 %                                       LV and HV
 %                       lim(ii,3) [K] Highest temperature limit
-%               .spec Contains the elements of this species (Max. 4)
-%               .nspec Contains the elemnt number of this species
 %               .HV Contains the Burcat coeficients for the temperature
 %                       range beetween lim(ii,2) and lim(ii,3)
 %               .LV Contains the Burcat coeficients for the temperature
