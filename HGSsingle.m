@@ -1,7 +1,7 @@
-function [Res] = HGSsingle(species,property,T,P)
+function [Res] = HGSsingle(species,property,T,p)
 %**************************************************************************
 %
-% [Res] = HGSsingle(species,property,T,P)
+% [Res] = HGSsingle(species,property,T,p)
 %
 %**************************************************************************
 %
@@ -13,7 +13,7 @@ function [Res] = HGSsingle(species,property,T,P)
 % species --> String or numbers of species
 % property --> Property requested (see below)
 % T --> [K] Temperature
-% P --> [bar] Pressure
+% p --> [bar] Pressure
 %
 % Outputs:
 %--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ end
 
 %% S
 if code(5)
-    [s] = HGSs(a,T,P,HGSdata.state{id});
+    [s] = HGSs(a,T,p,HGSdata.state{id});
     Res = s;
 end
 

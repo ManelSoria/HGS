@@ -1,7 +1,7 @@
-function [varargout] = HGSprop(species,n,T,P,varargin)
+function [varargout] = HGSprop(species,n,T,p,varargin)
 %**************************************************************************
 %
-% [varargout] = HGSprop(species,n,T,P,varargin)
+% [varargout] = HGSprop(species,n,T,p,varargin)
 %     e.g. [Mm,Cp,Cv,H,S,G,Rg,gamma,a] = HGSprop({'H2' 'O2'},[1 2],300,1)
 %          [H,S] = HGSprop({'H2' 'O2'},[1 2],300,1,'H','S')
 %          [S,H] = HGSprop({'H2' 'O2'},[1 2],300,1,'S','H')
@@ -16,7 +16,7 @@ function [varargout] = HGSprop(species,n,T,P,varargin)
 % species --> String or code of species
 % n --> [mols] Number of mols per species
 % T --> [K] Temperature
-% P --> [bar] Pressure
+% p --> [bar] Pressure
 % varargin --> Expected return: 'Mm' 'Cp' 'Cv' 'H' 'S' 'G' 'Rg' 'gamma' 'a'
 %                                If it is empty, all the properties will be
 %                                returned
@@ -192,7 +192,7 @@ if code(5)
         end
     end
     
-    P_i = P.*n/nt;
+    P_i = p.*n/nt;
 end
 
 %% S
@@ -262,7 +262,6 @@ else
                 varargout{ii} = gamma;
             case 'a'
                 varargout{ii} = sound;
-
         end   
    end
 end
