@@ -27,14 +27,12 @@ function [Tp,species,n,flag] = HGSeqcond(species,n0,type,V0,P,Fro_Shift,options)
 %                 .epsy Diferential S where the solver reachs the solution;
 %                 .fchange T difference where secant method is
 %                          changed by bisection method;
-%                 .type Select between: 'Frozen' for frozen flow
-%                                       'Shifting' for shifting flow
 %                 .info Detailed info == 1; No info == 0.
 %                 .maxrange Max range to fit in a parabola
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',50,'epsx',0.1,'epsy',0.5,'fchange',5,'maxrange',1500,
-%                   'type','Shifting','info',0,'dTp',100)
+%           struct('xmin',300,'xmax',4000,'maxiter',50,'epsx',0.1,'epsy',0.5,
+%                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------

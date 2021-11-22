@@ -126,7 +126,7 @@ end
         end          
         [Tstar,n,flags] = HGSsecant(@hastobeS,n,options1);
         if flags~=1
-            error('uhhh error in hastobeM HGSsecant failed flag=%d \n',flags);
+            error('uhhh error with hastobeS HGSsecant failed flag=%d \n',flags);
         end
         [a,H2] = HGSprop(species,n,Tstar,Pstar,'a','H');   
         v2=sqrt(2*1000*(h1-H2/m));

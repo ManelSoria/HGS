@@ -25,8 +25,8 @@ function [Tp,n,flag] = HGSsecant(f,n0,options)
 %                 .info Detailed info == 1; No info == 0.
 %                 .dTp Improve the velocity with the approximation of
 %                 parabola. +- dTp
-%           struct('xmin',300,'xmax',6000,'maxiter',200,'epsx',0.1,'epsy',
-%                   1,'fchange',5,'info',0,'dTp',100,'maxrange',1500)
+%           struct('xmin',300,'xmax',4000,'maxiter',50,'epsx',0.1,'epsy',0.5,
+%                   'fchange',5,'maxrange',1500,'info',0,'dTp',100)
 %
 % Outputs:
 %--------------------------------------------------------------------------
