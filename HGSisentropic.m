@@ -132,7 +132,7 @@ end
         v2=sqrt(2*1000*(h1-H2/m));
         M1 = v2/a;
         zeroM = V1 - M1;
-        %fprintf('Pstar=%e Tstar=%e n(3)=%e V1(goal)=%e M=%e \n',Pstar,Tstar,n(3),V1,M1);
+       
     end
     
 

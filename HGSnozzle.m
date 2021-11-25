@@ -58,7 +58,7 @@ for ii=1:length(P)
     v(ii)=M(ii)*a(ii); %m/s
     A(ii) = m/(v(ii)*rho); % m^2
     F(ii) = m*v(ii)+A(ii)*(P(ii)-Pa)*1e5; % Convert bar to Pa
-    Isp(ii) = v(ii)/g0;
+    Isp(ii) = F(ii)/(m*g0);
 end
 
 
